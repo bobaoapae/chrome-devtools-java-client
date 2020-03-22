@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,13 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.target.AttachedToTarget;
-import com.github.kklisura.cdt.protocol.events.target.DetachedFromTarget;
-import com.github.kklisura.cdt.protocol.events.target.ReceivedMessageFromTarget;
-import com.github.kklisura.cdt.protocol.events.target.TargetCrashed;
-import com.github.kklisura.cdt.protocol.events.target.TargetCreated;
-import com.github.kklisura.cdt.protocol.events.target.TargetDestroyed;
-import com.github.kklisura.cdt.protocol.events.target.TargetInfoChanged;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.target.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.target.RemoteLocation;
 import com.github.kklisura.cdt.protocol.types.target.TargetInfo;
+
 import java.util.List;
 
 /** Supports additional targets discovery and allows to attach to them. */
@@ -57,17 +47,17 @@ public interface Target {
   @Returns("sessionId")
   String attachToTarget(@ParamName("targetId") String targetId);
 
-  /**
-   * Attaches to the target with given id.
-   *
-   * @param targetId
-   * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the
-   *     commands.
-   */
-  @Returns("sessionId")
-  String attachToTarget(
-      @ParamName("targetId") String targetId,
-      @Experimental @Optional @ParamName("flatten") Boolean flatten);
+    /**
+     * Attaches to the target with given id.
+     *
+     * @param targetId
+     * @param flatten  Enables "flat" access to the session via specifying sessionId attribute in the
+     *                 commands. We plan to make this the default, deprecate non-flattened mode, and eventually
+     *                 retire it. See crbug.com/991325.
+     */
+    @Returns("sessionId")
+    String attachToTarget(
+            @ParamName("targetId") String targetId, @Optional @ParamName("flatten") Boolean flatten);
 
   /** Attaches to the browser target, only uses flat sessionId mode. */
   @Experimental
@@ -115,19 +105,31 @@ public interface Target {
       @ParamName("targetId") String targetId,
       @Optional @ParamName("bindingName") String bindingName);
 
-  /**
-   * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
-   * one.
-   */
-  @Experimental
-  @Returns("browserContextId")
-  String createBrowserContext();
+    /**
+     * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
+     * one.
+     */
+    @Experimental
+    @Returns("browserContextId")
+    String createBrowserContext();
 
-  /** Returns all browser contexts created with `Target.createBrowserContext` method. */
-  @Experimental
-  @Returns("browserContextIds")
-  @ReturnTypeParameter(String.class)
-  List<String> getBrowserContexts();
+    /**
+     * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
+     * one.
+     *
+     * @param disposeOnDetach If specified, disposes this context when debugging session disconnects.
+     */
+    @Experimental
+    @Returns("browserContextId")
+    String createBrowserContext(@Optional @ParamName("disposeOnDetach") Boolean disposeOnDetach);
+
+    /**
+     * Returns all browser contexts created with `Target.createBrowserContext` method.
+     */
+    @Experimental
+    @Returns("browserContextIds")
+    @ReturnTypeParameter(String.class)
+    List<String> getBrowserContexts();
 
   /**
    * Creates a new page.
@@ -201,20 +203,24 @@ public interface Target {
   @ReturnTypeParameter(TargetInfo.class)
   List<TargetInfo> getTargets();
 
-  /**
-   * Sends protocol message over session with given id.
+    /**
+     * Sends protocol message over session with given id. Consider using flat mode instead; see
+     * commands attachToTarget, setAutoAttach, and crbug.com/991325.
    *
    * @param message
    */
+  @Deprecated
   void sendMessageToTarget(@ParamName("message") String message);
 
-  /**
-   * Sends protocol message over session with given id.
-   *
-   * @param message
-   * @param sessionId Identifier of the session.
+    /**
+     * Sends protocol message over session with given id. Consider using flat mode instead; see
+     * commands attachToTarget, setAutoAttach, and crbug.com/991325.
+     *
+     * @param message
+     * @param sessionId Identifier of the session.
    * @param targetId Deprecated.
    */
+  @Deprecated
   void sendMessageToTarget(
       @ParamName("message") String message,
       @Optional @ParamName("sessionId") String sessionId,
@@ -243,13 +249,14 @@ public interface Target {
    * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use
    *     `Runtime.runIfWaitingForDebugger` to run paused targets.
    * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the
-   *     commands.
+   *     commands. We plan to make this the default, deprecate non-flattened mode, and eventually
+   *     retire it. See crbug.com/991325.
    */
   @Experimental
   void setAutoAttach(
-      @ParamName("autoAttach") Boolean autoAttach,
-      @ParamName("waitForDebuggerOnStart") Boolean waitForDebuggerOnStart,
-      @Experimental @Optional @ParamName("flatten") Boolean flatten);
+          @ParamName("autoAttach") Boolean autoAttach,
+          @ParamName("waitForDebuggerOnStart") Boolean waitForDebuggerOnStart,
+      @Optional @ParamName("flatten") Boolean flatten);
 
   /**
    * Controls whether to discover available targets and notify via

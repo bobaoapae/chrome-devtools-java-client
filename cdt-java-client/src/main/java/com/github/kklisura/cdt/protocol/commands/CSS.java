@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,31 +20,12 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.css.FontsUpdated;
-import com.github.kklisura.cdt.protocol.events.css.MediaQueryResultChanged;
-import com.github.kklisura.cdt.protocol.events.css.StyleSheetAdded;
-import com.github.kklisura.cdt.protocol.events.css.StyleSheetChanged;
-import com.github.kklisura.cdt.protocol.events.css.StyleSheetRemoved;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.css.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.css.BackgroundColors;
-import com.github.kklisura.cdt.protocol.types.css.CSSComputedStyleProperty;
-import com.github.kklisura.cdt.protocol.types.css.CSSMedia;
-import com.github.kklisura.cdt.protocol.types.css.CSSRule;
-import com.github.kklisura.cdt.protocol.types.css.CSSStyle;
-import com.github.kklisura.cdt.protocol.types.css.InlineStylesForNode;
-import com.github.kklisura.cdt.protocol.types.css.MatchedStylesForNode;
-import com.github.kklisura.cdt.protocol.types.css.PlatformFontUsage;
-import com.github.kklisura.cdt.protocol.types.css.RuleUsage;
-import com.github.kklisura.cdt.protocol.types.css.SelectorList;
-import com.github.kklisura.cdt.protocol.types.css.SourceRange;
-import com.github.kklisura.cdt.protocol.types.css.StyleDeclarationEdit;
-import com.github.kklisura.cdt.protocol.types.css.Value;
+import com.github.kklisura.cdt.protocol.types.css.*;
+
 import java.util.List;
 
 /**
@@ -241,13 +222,11 @@ public interface CSS {
   @ReturnTypeParameter(RuleUsage.class)
   List<RuleUsage> stopRuleUsageTracking();
 
-  /**
-   * Obtain list of rules that became used since last call to this method (or since start of
-   * coverage instrumentation)
-   */
-  @Returns("coverage")
-  @ReturnTypeParameter(RuleUsage.class)
-  List<RuleUsage> takeCoverageDelta();
+    /**
+     * Obtain list of rules that became used since last call to this method (or since start of
+     * coverage instrumentation)
+     */
+    TakeCoverageDelta takeCoverageDelta();
 
   /**
    * Fires whenever a web font is updated. A non-empty font parameter indicates a successfully

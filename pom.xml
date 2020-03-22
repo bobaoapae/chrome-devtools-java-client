@@ -11,14 +11,28 @@
   <description>Chrome DevTools java client</description>
   <url>https://github.com/kklisura/chrome-devtools-java-client</url>
 
-  <modules>
-    <module>cdt-protocol-parser</module>
-    <module>cdt-java-protocol-builder</module>
-    <module>cdt-java-client</module>
-    <module>cdt-examples</module>
-  </modules>
+    <modules>
+        <module>cdt-protocol-parser</module>
+        <module>cdt-java-protocol-builder</module>
+        <module>cdt-java-client</module>
+        <module>cdt-examples</module>
+    </modules>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>zapia.com.br</id>
+            <name>zapia.com.br</name>
+            <url>http://zapia.com.br:8090/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>zapia.com.br</id>
+            <name>zapia.com.br</name>
+            <url>http://zapia.com.br:8090/repository/maven-snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

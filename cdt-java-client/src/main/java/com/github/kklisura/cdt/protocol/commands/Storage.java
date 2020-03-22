@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,34 +24,81 @@ import com.github.kklisura.cdt.protocol.events.storage.CacheStorageContentUpdate
 import com.github.kklisura.cdt.protocol.events.storage.CacheStorageListUpdated;
 import com.github.kklisura.cdt.protocol.events.storage.IndexedDBContentUpdated;
 import com.github.kklisura.cdt.protocol.events.storage.IndexedDBListUpdated;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
+import com.github.kklisura.cdt.protocol.types.network.Cookie;
+import com.github.kklisura.cdt.protocol.types.network.CookieParam;
 import com.github.kklisura.cdt.protocol.types.storage.UsageAndQuota;
+
+import java.util.List;
 
 @Experimental
 public interface Storage {
 
-  /**
-   * Clears storage for origin.
-   *
-   * @param origin Security origin.
-   * @param storageTypes Comma separated list of StorageType to clear.
-   */
-  void clearDataForOrigin(
-      @ParamName("origin") String origin, @ParamName("storageTypes") String storageTypes);
+    /**
+     * Clears storage for origin.
+     *
+     * @param origin       Security origin.
+     * @param storageTypes Comma separated list of StorageType to clear.
+     */
+    void clearDataForOrigin(
+            @ParamName("origin") String origin, @ParamName("storageTypes") String storageTypes);
 
-  /**
-   * Returns usage and quota in bytes.
-   *
-   * @param origin Security origin.
-   */
-  UsageAndQuota getUsageAndQuota(@ParamName("origin") String origin);
+    /**
+     * Returns all browser cookies.
+     */
+    @Returns("cookies")
+    @ReturnTypeParameter(Cookie.class)
+    List<Cookie> getCookies();
 
-  /**
-   * Registers origin to be notified when an update occurs to its cache storage list.
+    /**
+     * Returns all browser cookies.
+     *
+     * @param browserContextId Browser context to use when called on the browser endpoint.
+     */
+    @Returns("cookies")
+    @ReturnTypeParameter(Cookie.class)
+    List<Cookie> getCookies(@Optional @ParamName("browserContextId") String browserContextId);
+
+    /**
+     * Sets given cookies.
+     *
+     * @param cookies Cookies to be set.
+     */
+    void setCookies(@ParamName("cookies") List<CookieParam> cookies);
+
+    /**
+     * Sets given cookies.
+     *
+     * @param cookies          Cookies to be set.
+     * @param browserContextId Browser context to use when called on the browser endpoint.
+     */
+    void setCookies(
+            @ParamName("cookies") List<CookieParam> cookies,
+            @Optional @ParamName("browserContextId") String browserContextId);
+
+    /**
+     * Clears cookies.
+     */
+    void clearCookies();
+
+    /**
+     * Clears cookies.
+     *
+     * @param browserContextId Browser context to use when called on the browser endpoint.
+     */
+    void clearCookies(@Optional @ParamName("browserContextId") String browserContextId);
+
+    /**
+     * Returns usage and quota in bytes.
+     *
+     * @param origin Security origin.
+     */
+    UsageAndQuota getUsageAndQuota(@ParamName("origin") String origin);
+
+    /**
+     * Registers origin to be notified when an update occurs to its cache storage list.
    *
    * @param origin Security origin.
    */

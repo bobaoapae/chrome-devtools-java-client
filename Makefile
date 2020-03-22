@@ -30,7 +30,7 @@ build-cdt-java-protocol-builder: install-cdt-java-protocol-parser
 
 compile-cdt-java-client:
 	# Compiling cdt-java-client project...
-	$(MVN) --file "$(JAVA_CLIENT_DIR)/" clean compile
+	$(MVN) --file "$(JAVA_CLIENT_DIR)/" clean compile install deploy -Prelease
 
 clean-cdt-java-protocol-builder:
 	# Cleaning cdt-java-protocol-builder project...

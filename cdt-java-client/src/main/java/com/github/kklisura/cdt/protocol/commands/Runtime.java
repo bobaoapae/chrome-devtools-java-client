@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,31 +20,12 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.runtime.BindingCalled;
-import com.github.kklisura.cdt.protocol.events.runtime.ConsoleAPICalled;
-import com.github.kklisura.cdt.protocol.events.runtime.ExceptionRevoked;
-import com.github.kklisura.cdt.protocol.events.runtime.ExceptionThrown;
-import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextCreated;
-import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextDestroyed;
-import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextsCleared;
-import com.github.kklisura.cdt.protocol.events.runtime.InspectRequested;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.runtime.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.runtime.AwaitPromise;
-import com.github.kklisura.cdt.protocol.types.runtime.CallArgument;
-import com.github.kklisura.cdt.protocol.types.runtime.CallFunctionOn;
-import com.github.kklisura.cdt.protocol.types.runtime.CompileScript;
-import com.github.kklisura.cdt.protocol.types.runtime.Evaluate;
-import com.github.kklisura.cdt.protocol.types.runtime.HeapUsage;
-import com.github.kklisura.cdt.protocol.types.runtime.Properties;
-import com.github.kklisura.cdt.protocol.types.runtime.RemoteObject;
-import com.github.kklisura.cdt.protocol.types.runtime.RunScript;
+import com.github.kklisura.cdt.protocol.types.runtime.*;
+
 import java.util.List;
 
 /**
@@ -183,21 +164,27 @@ public interface Runtime {
    * @param awaitPromise Whether execution should `await` for resulting value and return once
    *     awaited promise is resolved.
    * @param throwOnSideEffect Whether to throw an exception if side effect cannot be ruled out
-   *     during evaluation.
+   *     during evaluation. This implies `disableBreaks` below.
    * @param timeout Terminate execution after timing out (number of milliseconds).
+   * @param disableBreaks Disable breakpoints during execution.
+   * @param replMode Setting this flag to true enables `let` re-declaration and top-level `await`.
+   *     Note that `let` variables can only be re-declared if they originate from `replMode`
+   *     themselves.
    */
   Evaluate evaluate(
-      @ParamName("expression") String expression,
-      @Optional @ParamName("objectGroup") String objectGroup,
-      @Optional @ParamName("includeCommandLineAPI") Boolean includeCommandLineAPI,
-      @Optional @ParamName("silent") Boolean silent,
-      @Optional @ParamName("contextId") Integer contextId,
-      @Optional @ParamName("returnByValue") Boolean returnByValue,
-      @Experimental @Optional @ParamName("generatePreview") Boolean generatePreview,
-      @Optional @ParamName("userGesture") Boolean userGesture,
-      @Optional @ParamName("awaitPromise") Boolean awaitPromise,
-      @Experimental @Optional @ParamName("throwOnSideEffect") Boolean throwOnSideEffect,
-      @Experimental @Optional @ParamName("timeout") Double timeout);
+          @ParamName("expression") String expression,
+          @Optional @ParamName("objectGroup") String objectGroup,
+          @Optional @ParamName("includeCommandLineAPI") Boolean includeCommandLineAPI,
+          @Optional @ParamName("silent") Boolean silent,
+          @Optional @ParamName("contextId") Integer contextId,
+          @Optional @ParamName("returnByValue") Boolean returnByValue,
+          @Experimental @Optional @ParamName("generatePreview") Boolean generatePreview,
+          @Optional @ParamName("userGesture") Boolean userGesture,
+          @Optional @ParamName("awaitPromise") Boolean awaitPromise,
+          @Experimental @Optional @ParamName("throwOnSideEffect") Boolean throwOnSideEffect,
+          @Experimental @Optional @ParamName("timeout") Double timeout,
+          @Experimental @Optional @ParamName("disableBreaks") Boolean disableBreaks,
+          @Experimental @Optional @ParamName("replMode") Boolean replMode);
 
   /** Returns the isolate id. */
   @Experimental

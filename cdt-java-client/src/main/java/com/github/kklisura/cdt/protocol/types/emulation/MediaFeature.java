@@ -1,10 +1,10 @@
-package com.github.kklisura.cdt.protocol.types.input;
+package com.github.kklisura.cdt.protocol.types.emulation;
 
 /*-
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,25 @@ package com.github.kklisura.cdt.protocol.types.input;
  * #L%
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+public class MediaFeature {
 
-/** Mouse button. */
-public enum EmulateTouchFromMouseEventButton {
-  @JsonProperty("none")
-  NONE,
-  @JsonProperty("left")
-  LEFT,
-  @JsonProperty("middle")
-  MIDDLE,
-  @JsonProperty("right")
-  RIGHT
+    private String name;
+
+    private String value;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,8 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.heapprofiler.AddHeapSnapshotChunk;
-import com.github.kklisura.cdt.protocol.events.heapprofiler.HeapStatsUpdate;
-import com.github.kklisura.cdt.protocol.events.heapprofiler.LastSeenObjectId;
-import com.github.kklisura.cdt.protocol.events.heapprofiler.ReportHeapSnapshotProgress;
-import com.github.kklisura.cdt.protocol.events.heapprofiler.ResetProfiles;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.heapprofiler.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.heapprofiler.SamplingHeapProfile;
@@ -90,19 +82,26 @@ public interface HeapProfiler {
 
   void stopTrackingHeapObjects();
 
-  /**
-   * @param reportProgress If true 'reportHeapSnapshotProgress' events will be generated while
-   *     snapshot is being taken when the tracking is stopped.
-   */
-  void stopTrackingHeapObjects(@Optional @ParamName("reportProgress") Boolean reportProgress);
+    /**
+     * @param reportProgress            If true 'reportHeapSnapshotProgress' events will be generated while
+     *                                  snapshot is being taken when the tracking is stopped.
+     * @param treatGlobalObjectsAsRoots
+     */
+    void stopTrackingHeapObjects(
+            @Optional @ParamName("reportProgress") Boolean reportProgress,
+            @Optional @ParamName("treatGlobalObjectsAsRoots") Boolean treatGlobalObjectsAsRoots);
 
-  void takeHeapSnapshot();
+    void takeHeapSnapshot();
 
-  /**
-   * @param reportProgress If true 'reportHeapSnapshotProgress' events will be generated while
-   *     snapshot is being taken.
-   */
-  void takeHeapSnapshot(@Optional @ParamName("reportProgress") Boolean reportProgress);
+    /**
+     * @param reportProgress            If true 'reportHeapSnapshotProgress' events will be generated while
+     *                                  snapshot is being taken.
+     * @param treatGlobalObjectsAsRoots If true, a raw snapshot without artifical roots will be
+     *                                  generated
+     */
+    void takeHeapSnapshot(
+            @Optional @ParamName("reportProgress") Boolean reportProgress,
+            @Optional @ParamName("treatGlobalObjectsAsRoots") Boolean treatGlobalObjectsAsRoots);
 
   @EventName("addHeapSnapshotChunk")
   EventListener onAddHeapSnapshotChunk(EventHandler<AddHeapSnapshotChunk> eventListener);

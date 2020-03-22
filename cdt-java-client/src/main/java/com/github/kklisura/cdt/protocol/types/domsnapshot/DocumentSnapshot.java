@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.domsnapshot;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,51 +22,85 @@ package com.github.kklisura.cdt.protocol.types.domsnapshot;
 
 import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 
-/** Document snapshot. */
+/**
+ * Document snapshot.
+ */
 public class DocumentSnapshot {
 
-  private Integer documentURL;
+    private Integer documentURL;
 
-  private Integer baseURL;
+    private Integer title;
 
-  private Integer contentLanguage;
+    private Integer baseURL;
 
-  private Integer encodingName;
+    private Integer contentLanguage;
 
-  private Integer publicId;
+    private Integer encodingName;
 
-  private Integer systemId;
+    private Integer publicId;
+
+    private Integer systemId;
 
   private Integer frameId;
 
-  private NodeTreeSnapshot nodes;
+    private NodeTreeSnapshot nodes;
 
-  private LayoutTreeSnapshot layout;
+    private LayoutTreeSnapshot layout;
 
-  private TextBoxSnapshot textBoxes;
+    private TextBoxSnapshot textBoxes;
 
-  @Optional private Double scrollOffsetX;
+    @Optional
+    private Double scrollOffsetX;
 
-  @Optional private Double scrollOffsetY;
+    @Optional
+    private Double scrollOffsetY;
 
-  /** Document URL that `Document` or `FrameOwner` node points to. */
-  public Integer getDocumentURL() {
-    return documentURL;
-  }
+    @Optional
+    private Double contentWidth;
 
-  /** Document URL that `Document` or `FrameOwner` node points to. */
-  public void setDocumentURL(Integer documentURL) {
-    this.documentURL = documentURL;
-  }
+    @Optional
+    private Double contentHeight;
 
-  /** Base URL that `Document` or `FrameOwner` node uses for URL completion. */
-  public Integer getBaseURL() {
-    return baseURL;
-  }
+    /**
+     * Document URL that `Document` or `FrameOwner` node points to.
+     */
+    public Integer getDocumentURL() {
+        return documentURL;
+    }
 
-  /** Base URL that `Document` or `FrameOwner` node uses for URL completion. */
-  public void setBaseURL(Integer baseURL) {
-    this.baseURL = baseURL;
+    /**
+     * Document URL that `Document` or `FrameOwner` node points to.
+     */
+    public void setDocumentURL(Integer documentURL) {
+        this.documentURL = documentURL;
+    }
+
+    /**
+     * Document title.
+     */
+    public Integer getTitle() {
+        return title;
+    }
+
+    /**
+     * Document title.
+     */
+    public void setTitle(Integer title) {
+        this.title = title;
+    }
+
+    /**
+     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     */
+    public Integer getBaseURL() {
+        return baseURL;
+    }
+
+    /**
+     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     */
+    public void setBaseURL(Integer baseURL) {
+        this.baseURL = baseURL;
   }
 
   /** Contains the document's content language. */
@@ -156,16 +190,48 @@ public class DocumentSnapshot {
 
   /** Horizontal scroll offset. */
   public void setScrollOffsetX(Double scrollOffsetX) {
-    this.scrollOffsetX = scrollOffsetX;
+      this.scrollOffsetX = scrollOffsetX;
   }
 
-  /** Vertical scroll offset. */
-  public Double getScrollOffsetY() {
-    return scrollOffsetY;
-  }
+    /**
+     * Vertical scroll offset.
+     */
+    public Double getScrollOffsetY() {
+        return scrollOffsetY;
+    }
 
-  /** Vertical scroll offset. */
-  public void setScrollOffsetY(Double scrollOffsetY) {
-    this.scrollOffsetY = scrollOffsetY;
-  }
+    /**
+     * Vertical scroll offset.
+     */
+    public void setScrollOffsetY(Double scrollOffsetY) {
+        this.scrollOffsetY = scrollOffsetY;
+    }
+
+    /**
+     * Document content width.
+     */
+    public Double getContentWidth() {
+        return contentWidth;
+    }
+
+    /**
+     * Document content width.
+     */
+    public void setContentWidth(Double contentWidth) {
+        this.contentWidth = contentWidth;
+    }
+
+    /**
+     * Document content height.
+     */
+    public Double getContentHeight() {
+        return contentHeight;
+    }
+
+    /**
+     * Document content height.
+     */
+    public void setContentHeight(Double contentHeight) {
+        this.contentHeight = contentHeight;
+    }
 }

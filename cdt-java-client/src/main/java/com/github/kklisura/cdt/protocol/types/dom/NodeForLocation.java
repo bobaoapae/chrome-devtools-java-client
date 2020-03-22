@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.dom;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,27 +24,52 @@ import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 
 public class NodeForLocation {
 
-  private Integer backendNodeId;
+    private Integer backendNodeId;
 
-  @Optional private Integer nodeId;
+    private String frameId;
 
-  /** Resulting node. */
-  public Integer getBackendNodeId() {
-    return backendNodeId;
-  }
+    @Optional
+    private Integer nodeId;
 
-  /** Resulting node. */
-  public void setBackendNodeId(Integer backendNodeId) {
-    this.backendNodeId = backendNodeId;
-  }
+    /**
+     * Resulting node.
+     */
+    public Integer getBackendNodeId() {
+        return backendNodeId;
+    }
 
-  /** Id of the node at given coordinates, only when enabled and requested document. */
-  public Integer getNodeId() {
-    return nodeId;
-  }
+    /**
+     * Resulting node.
+     */
+    public void setBackendNodeId(Integer backendNodeId) {
+        this.backendNodeId = backendNodeId;
+    }
 
-  /** Id of the node at given coordinates, only when enabled and requested document. */
-  public void setNodeId(Integer nodeId) {
-    this.nodeId = nodeId;
-  }
+    /**
+     * Frame this node belongs to.
+     */
+    public String getFrameId() {
+        return frameId;
+    }
+
+    /**
+     * Frame this node belongs to.
+     */
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
+    }
+
+    /**
+     * Id of the node at given coordinates, only when enabled and requested document.
+     */
+    public Integer getNodeId() {
+        return nodeId;
+    }
+
+    /**
+     * Id of the node at given coordinates, only when enabled and requested document.
+     */
+    public void setNodeId(Integer nodeId) {
+        this.nodeId = nodeId;
+    }
 }

@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,12 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.types.cachestorage.Cache;
 import com.github.kklisura.cdt.protocol.types.cachestorage.CachedResponse;
 import com.github.kklisura.cdt.protocol.types.cachestorage.Header;
 import com.github.kklisura.cdt.protocol.types.cachestorage.RequestEntries;
+
 import java.util.List;
 
 @Experimental
@@ -71,17 +68,12 @@ public interface CacheStorage {
       @ParamName("requestURL") String requestURL,
       @ParamName("requestHeaders") List<Header> requestHeaders);
 
-  /**
-   * Requests data from cache.
-   *
-   * @param cacheId ID of cache to get entries from.
-   * @param skipCount Number of records to skip.
-   * @param pageSize Number of records to fetch.
-   */
-  RequestEntries requestEntries(
-      @ParamName("cacheId") String cacheId,
-      @ParamName("skipCount") Integer skipCount,
-      @ParamName("pageSize") Integer pageSize);
+    /**
+     * Requests data from cache.
+     *
+     * @param cacheId ID of cache to get entries from.
+     */
+    RequestEntries requestEntries(@ParamName("cacheId") String cacheId);
 
   /**
    * Requests data from cache.
@@ -92,8 +84,8 @@ public interface CacheStorage {
    * @param pathFilter If present, only return the entries containing this substring in the path
    */
   RequestEntries requestEntries(
-      @ParamName("cacheId") String cacheId,
-      @ParamName("skipCount") Integer skipCount,
-      @ParamName("pageSize") Integer pageSize,
-      @Optional @ParamName("pathFilter") String pathFilter);
+          @ParamName("cacheId") String cacheId,
+          @Optional @ParamName("skipCount") Integer skipCount,
+          @Optional @ParamName("pageSize") Integer pageSize,
+          @Optional @ParamName("pathFilter") String pathFilter);
 }

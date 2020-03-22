@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.events.network;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.github.kklisura.cdt.protocol.types.network.AuthChallenge;
 import com.github.kklisura.cdt.protocol.types.network.ErrorReason;
 import com.github.kklisura.cdt.protocol.types.network.Request;
 import com.github.kklisura.cdt.protocol.types.network.ResourceType;
+
 import java.util.Map;
 
 /**

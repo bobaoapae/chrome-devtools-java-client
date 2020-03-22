@@ -1,10 +1,10 @@
-package com.github.kklisura.cdt.protocol.types.input;
+package com.github.kklisura.cdt.protocol.types.page;
 
 /*-
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,27 @@ package com.github.kklisura.cdt.protocol.types.input;
  * #L%
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 
-/** Mouse button (default: "none"). */
-public enum DispatchMouseEventButton {
-  @JsonProperty("none")
-  NONE,
-  @JsonProperty("left")
-  LEFT,
-  @JsonProperty("middle")
-  MIDDLE,
-  @JsonProperty("right")
-  RIGHT,
-  @JsonProperty("back")
-  BACK,
-  @JsonProperty("forward")
-  FORWARD
+/**
+ * Parsed app manifest properties.
+ */
+@Experimental
+public class AppManifestParsedProperties {
+
+    private String scope;
+
+    /**
+     * Computed scope value
+     */
+    public String getScope() {
+        return scope;
+    }
+
+    /**
+     * Computed scope value
+     */
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

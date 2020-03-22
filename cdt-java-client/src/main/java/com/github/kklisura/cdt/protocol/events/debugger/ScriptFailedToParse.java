@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.events.debugger;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ package com.github.kklisura.cdt.protocol.events.debugger;
 
 import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 import com.github.kklisura.cdt.protocol.support.annotations.Optional;
+import com.github.kklisura.cdt.protocol.types.debugger.ScriptLanguage;
 import com.github.kklisura.cdt.protocol.types.runtime.StackTrace;
+
 import java.util.Map;
 
 /** Fired when virtual machine fails to parse the script. */
@@ -46,25 +48,43 @@ public class ScriptFailedToParse {
 
   @Optional private Map<String, Object> executionContextAuxData;
 
-  @Optional private String sourceMapURL;
+    @Optional
+    private String sourceMapURL;
 
-  @Optional private Boolean hasSourceURL;
+    @Optional
+    private Boolean hasSourceURL;
 
-  @Optional private Boolean isModule;
+    @Optional
+    private Boolean isModule;
 
-  @Optional private Integer length;
+    @Optional
+    private Integer length;
 
-  @Experimental @Optional private StackTrace stackTrace;
+    @Experimental
+    @Optional
+    private StackTrace stackTrace;
 
-  /** Identifier of the script parsed. */
-  public String getScriptId() {
-    return scriptId;
-  }
+    @Experimental
+    @Optional
+    private Integer codeOffset;
 
-  /** Identifier of the script parsed. */
-  public void setScriptId(String scriptId) {
-    this.scriptId = scriptId;
-  }
+    @Experimental
+    @Optional
+    private ScriptLanguage scriptLanguage;
+
+    /**
+     * Identifier of the script parsed.
+     */
+    public String getScriptId() {
+        return scriptId;
+    }
+
+    /**
+     * Identifier of the script parsed.
+     */
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
+    }
 
   /** URL or name of the script parsed (if any). */
   public String getUrl() {
@@ -186,13 +206,45 @@ public class ScriptFailedToParse {
     this.length = length;
   }
 
-  /** JavaScript top stack frame of where the script parsed event was triggered if available. */
-  public StackTrace getStackTrace() {
-    return stackTrace;
-  }
+    /**
+     * JavaScript top stack frame of where the script parsed event was triggered if available.
+     */
+    public StackTrace getStackTrace() {
+        return stackTrace;
+    }
 
-  /** JavaScript top stack frame of where the script parsed event was triggered if available. */
-  public void setStackTrace(StackTrace stackTrace) {
-    this.stackTrace = stackTrace;
-  }
+    /**
+     * JavaScript top stack frame of where the script parsed event was triggered if available.
+     */
+    public void setStackTrace(StackTrace stackTrace) {
+        this.stackTrace = stackTrace;
+    }
+
+    /**
+     * If the scriptLanguage is WebAssembly, the code section offset in the module.
+     */
+    public Integer getCodeOffset() {
+        return codeOffset;
+    }
+
+    /**
+     * If the scriptLanguage is WebAssembly, the code section offset in the module.
+     */
+    public void setCodeOffset(Integer codeOffset) {
+        this.codeOffset = codeOffset;
+    }
+
+    /**
+     * The language of the script.
+     */
+    public ScriptLanguage getScriptLanguage() {
+        return scriptLanguage;
+    }
+
+    /**
+     * The language of the script.
+     */
+    public void setScriptLanguage(ScriptLanguage scriptLanguage) {
+        this.scriptLanguage = scriptLanguage;
+    }
 }

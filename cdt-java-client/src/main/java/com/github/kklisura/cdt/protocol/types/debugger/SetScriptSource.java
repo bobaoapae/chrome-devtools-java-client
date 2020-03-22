@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.debugger;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 import com.github.kklisura.cdt.protocol.types.runtime.ExceptionDetails;
 import com.github.kklisura.cdt.protocol.types.runtime.StackTrace;
 import com.github.kklisura.cdt.protocol.types.runtime.StackTraceId;
+
 import java.util.List;
 
 public class SetScriptSource {

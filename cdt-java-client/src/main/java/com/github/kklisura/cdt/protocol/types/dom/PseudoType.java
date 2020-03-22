@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.dom;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,26 +22,30 @@ package com.github.kklisura.cdt.protocol.types.dom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pseudo element type. */
+/**
+ * Pseudo element type.
+ */
 public enum PseudoType {
-  @JsonProperty("first-line")
-  FIRST_LINE,
-  @JsonProperty("first-letter")
-  FIRST_LETTER,
-  @JsonProperty("before")
-  BEFORE,
-  @JsonProperty("after")
-  AFTER,
-  @JsonProperty("backdrop")
-  BACKDROP,
-  @JsonProperty("selection")
-  SELECTION,
-  @JsonProperty("first-line-inherited")
-  FIRST_LINE_INHERITED,
-  @JsonProperty("scrollbar")
-  SCROLLBAR,
-  @JsonProperty("scrollbar-thumb")
-  SCROLLBAR_THUMB,
+    @JsonProperty("first-line")
+    FIRST_LINE,
+    @JsonProperty("first-letter")
+    FIRST_LETTER,
+    @JsonProperty("before")
+    BEFORE,
+    @JsonProperty("after")
+    AFTER,
+    @JsonProperty("marker")
+    MARKER,
+    @JsonProperty("backdrop")
+    BACKDROP,
+    @JsonProperty("selection")
+    SELECTION,
+    @JsonProperty("first-line-inherited")
+    FIRST_LINE_INHERITED,
+    @JsonProperty("scrollbar")
+    SCROLLBAR,
+    @JsonProperty("scrollbar-thumb")
+    SCROLLBAR_THUMB,
   @JsonProperty("scrollbar-button")
   SCROLLBAR_BUTTON,
   @JsonProperty("scrollbar-track")

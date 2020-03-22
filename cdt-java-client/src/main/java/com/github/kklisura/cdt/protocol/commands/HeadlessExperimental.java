@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,18 +61,27 @@ public interface HeadlessExperimental {
    *     be returned.
    */
   BeginFrame beginFrame(
-      @Optional @ParamName("frameTimeTicks") Double frameTimeTicks,
-      @Optional @ParamName("interval") Double interval,
-      @Optional @ParamName("noDisplayUpdates") Boolean noDisplayUpdates,
-      @Optional @ParamName("screenshot") ScreenshotParams screenshot);
+          @Optional @ParamName("frameTimeTicks") Double frameTimeTicks,
+          @Optional @ParamName("interval") Double interval,
+          @Optional @ParamName("noDisplayUpdates") Boolean noDisplayUpdates,
+          @Optional @ParamName("screenshot") ScreenshotParams screenshot);
 
-  /** Disables headless events for the target. */
-  void disable();
+    /**
+     * Disables headless events for the target.
+     */
+    void disable();
 
-  /** Enables headless events for the target. */
-  void enable();
+    /**
+     * Enables headless events for the target.
+     */
+    void enable();
 
-  /** Issued when the target starts or stops needing BeginFrames. */
-  @EventName("needsBeginFramesChanged")
-  EventListener onNeedsBeginFramesChanged(EventHandler<NeedsBeginFramesChanged> eventListener);
+    /**
+     * Issued when the target starts or stops needing BeginFrames. Deprecated. Issue beginFrame
+     * unconditionally instead and use result from beginFrame to detect whether the frames were
+     * suppressed.
+     */
+    @EventName("needsBeginFramesChanged")
+    @Deprecated
+    EventListener onNeedsBeginFramesChanged(EventHandler<NeedsBeginFramesChanged> eventListener);
 }

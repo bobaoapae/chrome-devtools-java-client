@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,28 +21,26 @@ package com.github.kklisura.cdt.protocol.commands;
  */
 
 import com.github.kklisura.cdt.protocol.events.emulation.VirtualTimeBudgetExpired;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.dom.RGBA;
-import com.github.kklisura.cdt.protocol.types.emulation.ScreenOrientation;
-import com.github.kklisura.cdt.protocol.types.emulation.SetEmitTouchEventsForMouseConfiguration;
-import com.github.kklisura.cdt.protocol.types.emulation.VirtualTimePolicy;
+import com.github.kklisura.cdt.protocol.types.emulation.*;
 import com.github.kklisura.cdt.protocol.types.page.Viewport;
 
-/** This domain emulates different environments for the page. */
+import java.util.List;
+
+/**
+ * This domain emulates different environments for the page.
+ */
 public interface Emulation {
 
-  /** Tells whether emulation is supported. */
-  @Returns("result")
-  Boolean canEmulate();
+    /** Tells whether emulation is supported. */
+    @Returns("result")
+    Boolean canEmulate();
 
-  /** Clears the overriden device metrics. */
-  void clearDeviceMetricsOverride();
+    /** Clears the overriden device metrics. */
+    void clearDeviceMetricsOverride();
 
   /** Clears the overriden Geolocation Position and Error. */
   void clearGeolocationOverride();
@@ -150,31 +148,47 @@ public interface Emulation {
   @Experimental
   void setEmitTouchEventsForMouse(@ParamName("enabled") Boolean enabled);
 
-  /**
-   * @param enabled Whether touch emulation based on mouse input should be enabled.
-   * @param configuration Touch/gesture events configuration. Default: current platform.
-   */
-  @Experimental
-  void setEmitTouchEventsForMouse(
-      @ParamName("enabled") Boolean enabled,
-      @Optional @ParamName("configuration") SetEmitTouchEventsForMouseConfiguration configuration);
+    /**
+     * @param enabled       Whether touch emulation based on mouse input should be enabled.
+     * @param configuration Touch/gesture events configuration. Default: current platform.
+     */
+    @Experimental
+    void setEmitTouchEventsForMouse(
+            @ParamName("enabled") Boolean enabled,
+            @Optional @ParamName("configuration") SetEmitTouchEventsForMouseConfiguration configuration);
 
-  /**
-   * Emulates the given media for CSS media queries.
-   *
-   * @param media Media type to emulate. Empty string disables the override.
-   */
-  void setEmulatedMedia(@ParamName("media") String media);
+    /**
+     * Emulates the given media type or media feature for CSS media queries.
+     */
+    void setEmulatedMedia();
 
-  /**
-   * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
-   * unavailable.
-   */
-  void setGeolocationOverride();
+    /**
+     * Emulates the given media type or media feature for CSS media queries.
+     *
+     * @param media    Media type to emulate. Empty string disables the override.
+     * @param features Media features to emulate.
+     */
+    void setEmulatedMedia(
+            @Optional @ParamName("media") String media,
+            @Optional @ParamName("features") List<MediaFeature> features);
 
-  /**
-   * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
-   * unavailable.
+    /**
+     * Emulates the given vision deficiency.
+     *
+     * @param type Vision deficiency to emulate.
+     */
+    @Experimental
+    void setEmulatedVisionDeficiency(@ParamName("type") SetEmulatedVisionDeficiencyType type);
+
+    /**
+     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+     * unavailable.
+     */
+    void setGeolocationOverride();
+
+    /**
+     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+     * unavailable.
    *
    * @param latitude Mock latitude
    * @param longitude Mock longitude
@@ -253,21 +267,36 @@ public interface Emulation {
   @Experimental
   @Returns("virtualTimeTicksBase")
   Double setVirtualTimePolicy(
-      @ParamName("policy") VirtualTimePolicy policy,
-      @Optional @ParamName("budget") Double budget,
-      @Optional @ParamName("maxVirtualTimeTaskStarvationCount")
-          Integer maxVirtualTimeTaskStarvationCount,
-      @Optional @ParamName("waitForNavigation") Boolean waitForNavigation,
-      @Optional @ParamName("initialVirtualTime") Double initialVirtualTime);
+          @ParamName("policy") VirtualTimePolicy policy,
+          @Optional @ParamName("budget") Double budget,
+          @Optional @ParamName("maxVirtualTimeTaskStarvationCount")
+                  Integer maxVirtualTimeTaskStarvationCount,
+          @Optional @ParamName("waitForNavigation") Boolean waitForNavigation,
+          @Optional @ParamName("initialVirtualTime") Double initialVirtualTime);
 
-  /**
-   * Overrides default host system timezone with the specified one.
-   *
-   * @param timezoneId The timezone identifier. If empty, disables the override and restores default
-   *     host system timezone.
-   */
-  @Experimental
-  void setTimezoneOverride(@ParamName("timezoneId") String timezoneId);
+    /**
+     * Overrides default host system locale with the specified one.
+     */
+    @Experimental
+    void setLocaleOverride();
+
+    /**
+     * Overrides default host system locale with the specified one.
+     *
+     * @param locale ICU style C locale (e.g. "en_US"). If not specified or empty, disables the
+     *               override and restores default host system locale.
+     */
+    @Experimental
+    void setLocaleOverride(@Optional @ParamName("locale") String locale);
+
+    /**
+     * Overrides default host system timezone with the specified one.
+     *
+     * @param timezoneId The timezone identifier. If empty, disables the override and restores default
+     *                   host system timezone.
+     */
+    @Experimental
+    void setTimezoneOverride(@ParamName("timezoneId") String timezoneId);
 
   /**
    * Resizes the frame/viewport of the page. Note that this does not affect the frame's container

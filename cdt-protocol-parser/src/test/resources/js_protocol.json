@@ -292,17 +292,26 @@
                             "type": "integer"
                         },
                         {
-                            "name": "type",
-                            "optional": true,
-                            "type": "string",
-                            "enum": [
-                                "debuggerStatement",
-                                "call",
-                                "return"
-                            ]
+                          "name": "type",
+                          "optional": true,
+                          "type": "string",
+                          "enum": [
+                            "debuggerStatement",
+                            "call",
+                            "return"
+                          ]
                         }
                     ]
-                }
+                },
+              {
+                "id": "ScriptLanguage",
+                "description": "Enum of possible script languages.",
+                "type": "string",
+                "enum": [
+                  "JavaScript",
+                  "WebAssembly"
+                ]
+              }
             ],
             "commands": [
                 {
@@ -459,26 +468,51 @@
                 {
                     "name": "getScriptSource",
                     "description": "Returns source for the script with given id.",
-                    "parameters": [
-                        {
-                            "name": "scriptId",
-                            "description": "Id of the script to get source for.",
-                            "$ref": "Runtime.ScriptId"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "scriptSource",
-                            "description": "Script source.",
-                            "type": "string"
-                        }
-                    ]
+                  "parameters": [
+                    {
+                      "name": "scriptId",
+                      "description": "Id of the script to get source for.",
+                      "$ref": "Runtime.ScriptId"
+                    }
+                  ],
+                  "returns": [
+                    {
+                      "name": "scriptSource",
+                      "description": "Script source (empty in case of Wasm bytecode).",
+                      "type": "string"
+                    },
+                    {
+                      "name": "bytecode",
+                      "description": "Wasm bytecode.",
+                      "optional": true,
+                      "type": "string"
+                    }
+                  ]
                 },
-                {
-                    "name": "getStackTrace",
-                    "description": "Returns stack trace with given `stackTraceId`.",
-                    "experimental": true,
-                    "parameters": [
+              {
+                "name": "getWasmBytecode",
+                "description": "This command is deprecated. Use getScriptSource instead.",
+                "deprecated": true,
+                "parameters": [
+                  {
+                    "name": "scriptId",
+                    "description": "Id of the Wasm script to get source for.",
+                    "$ref": "Runtime.ScriptId"
+                  }
+                ],
+                "returns": [
+                  {
+                    "name": "bytecode",
+                    "description": "Script source.",
+                    "type": "string"
+                  }
+                ]
+              },
+              {
+                "name": "getStackTrace",
+                "description": "Returns stack trace with given `stackTraceId`.",
+                "experimental": true,
+                "parameters": [
                         {
                             "name": "stackTraceId",
                             "$ref": "Runtime.StackTraceId"
@@ -495,17 +529,18 @@
                     "name": "pause",
                     "description": "Stops on the next JavaScript statement."
                 },
-                {
-                    "name": "pauseOnAsyncCall",
-                    "experimental": true,
-                    "parameters": [
-                        {
-                            "name": "parentStackTraceId",
-                            "description": "Debugger will pause when async call with given stack trace is started.",
-                            "$ref": "Runtime.StackTraceId"
-                        }
-                    ]
-                },
+              {
+                "name": "pauseOnAsyncCall",
+                "experimental": true,
+                "deprecated": true,
+                "parameters": [
+                  {
+                    "name": "parentStackTraceId",
+                    "description": "Debugger will pause when async call with given stack trace is started.",
+                    "$ref": "Runtime.StackTraceId"
+                  }
+                ]
+              },
                 {
                     "name": "removeBreakpoint",
                     "description": "Removes JavaScript breakpoint.",
@@ -550,10 +585,18 @@
                         }
                     ]
                 },
-                {
-                    "name": "resume",
-                    "description": "Resumes JavaScript execution."
-                },
+              {
+                "name": "resume",
+                "description": "Resumes JavaScript execution.",
+                "parameters": [
+                  {
+                    "name": "terminateOnResume",
+                    "description": "Set to true to terminate execution upon resuming execution. In contrast\nto Runtime.terminateExecution, this will allows to execute further\nJavaScript (i.e. via evaluation) until execution of the paused code\nis actually resumed, at which point termination is triggered.\nIf execution is currently not paused, this parameter has no effect.",
+                    "optional": true,
+                    "type": "boolean"
+                  }
+                ]
+              },
                 {
                     "name": "searchInContent",
                     "description": "Searches for given string in script content.",
@@ -907,13 +950,13 @@
                     "name": "stepInto",
                     "description": "Steps into the function call.",
                     "parameters": [
-                        {
-                            "name": "breakOnAsyncCall",
-                            "description": "Debugger will issue additional Debugger.paused notification if any async task is scheduled\nbefore next pause.",
-                            "experimental": true,
-                            "optional": true,
-                            "type": "boolean"
-                        }
+                      {
+                        "name": "breakOnAsyncCall",
+                        "description": "Debugger will pause on the execution of the first async task which was scheduled\nbefore next pause.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "boolean"
+                      }
                     ]
                 },
                 {
@@ -1000,13 +1043,14 @@
                             "optional": true,
                             "$ref": "Runtime.StackTraceId"
                         },
-                        {
-                            "name": "asyncCallStackTraceId",
-                            "description": "Just scheduled async call will have this stack trace as parent stack during async execution.\nThis field is available only after `Debugger.stepInto` call with `breakOnAsynCall` flag.",
-                            "experimental": true,
-                            "optional": true,
-                            "$ref": "Runtime.StackTraceId"
-                        }
+                      {
+                        "name": "asyncCallStackTraceId",
+                        "description": "Never present, will be removed.",
+                        "experimental": true,
+                        "deprecated": true,
+                        "optional": true,
+                        "$ref": "Runtime.StackTraceId"
+                      }
                     ]
                 },
                 {
@@ -1083,17 +1127,31 @@
                         },
                         {
                             "name": "length",
-                            "description": "This script length.",
-                            "optional": true,
-                            "type": "integer"
+                          "description": "This script length.",
+                          "optional": true,
+                          "type": "integer"
                         },
-                        {
-                            "name": "stackTrace",
-                            "description": "JavaScript top stack frame of where the script parsed event was triggered if available.",
-                            "experimental": true,
-                            "optional": true,
-                            "$ref": "Runtime.StackTrace"
-                        }
+                      {
+                        "name": "stackTrace",
+                        "description": "JavaScript top stack frame of where the script parsed event was triggered if available.",
+                        "experimental": true,
+                        "optional": true,
+                        "$ref": "Runtime.StackTrace"
+                      },
+                      {
+                        "name": "codeOffset",
+                        "description": "If the scriptLanguage is WebAssembly, the code section offset in the module.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "integer"
+                      },
+                      {
+                        "name": "scriptLanguage",
+                        "description": "The language of the script.",
+                        "experimental": true,
+                        "optional": true,
+                        "$ref": "Debugger.ScriptLanguage"
+                      }
                     ]
                 },
                 {
@@ -1173,17 +1231,31 @@
                         },
                         {
                             "name": "length",
-                            "description": "This script length.",
-                            "optional": true,
-                            "type": "integer"
+                          "description": "This script length.",
+                          "optional": true,
+                          "type": "integer"
                         },
-                        {
-                            "name": "stackTrace",
-                            "description": "JavaScript top stack frame of where the script parsed event was triggered if available.",
-                            "experimental": true,
-                            "optional": true,
-                            "$ref": "Runtime.StackTrace"
-                        }
+                      {
+                        "name": "stackTrace",
+                        "description": "JavaScript top stack frame of where the script parsed event was triggered if available.",
+                        "experimental": true,
+                        "optional": true,
+                        "$ref": "Runtime.StackTrace"
+                      },
+                      {
+                        "name": "codeOffset",
+                        "description": "If the scriptLanguage is WebAssembly, the code section offset in the module.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "integer"
+                      },
+                      {
+                        "name": "scriptLanguage",
+                        "description": "The language of the script.",
+                        "experimental": true,
+                        "optional": true,
+                        "$ref": "Debugger.ScriptLanguage"
+                      }
                     ]
                 }
             ]
@@ -1375,23 +1447,34 @@
                 {
                     "name": "stopTrackingHeapObjects",
                     "parameters": [
-                        {
-                            "name": "reportProgress",
-                            "description": "If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken\nwhen the tracking is stopped.",
-                            "optional": true,
-                            "type": "boolean"
-                        }
+                      {
+                        "name": "reportProgress",
+                        "description": "If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken\nwhen the tracking is stopped.",
+                        "optional": true,
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "treatGlobalObjectsAsRoots",
+                        "optional": true,
+                        "type": "boolean"
+                      }
                     ]
                 },
                 {
                     "name": "takeHeapSnapshot",
                     "parameters": [
-                        {
-                            "name": "reportProgress",
-                            "description": "If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken.",
-                            "optional": true,
-                            "type": "boolean"
-                        }
+                      {
+                        "name": "reportProgress",
+                        "description": "If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken.",
+                        "optional": true,
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "treatGlobalObjectsAsRoots",
+                        "description": "If true, a raw snapshot without artifical roots will be generated",
+                        "optional": true,
+                        "type": "boolean"
+                      }
                     ]
                 }
             ],
@@ -1692,16 +1775,34 @@
                             "description": "JavaScript script name or url.",
                             "type": "string"
                         },
-                        {
-                            "name": "entries",
-                            "description": "Type profile entries for parameters and return values of the functions in the script.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "TypeProfileEntry"
-                            }
+                      {
+                        "name": "entries",
+                        "description": "Type profile entries for parameters and return values of the functions in the script.",
+                        "type": "array",
+                        "items": {
+                          "$ref": "TypeProfileEntry"
                         }
+                      }
                     ]
-                }
+                },
+              {
+                "id": "CounterInfo",
+                "description": "Collected counter information.",
+                "experimental": true,
+                "type": "object",
+                "properties": [
+                  {
+                    "name": "name",
+                    "description": "Counter name.",
+                    "type": "string"
+                  },
+                  {
+                    "name": "value",
+                    "description": "Counter value.",
+                    "type": "integer"
+                  }
+                ]
+              }
             ],
             "commands": [
                 {
@@ -1743,18 +1844,31 @@
                     "description": "Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code\ncoverage may be incomplete. Enabling prevents running optimized code and resets execution\ncounters.",
                     "parameters": [
                         {
-                            "name": "callCount",
-                            "description": "Collect accurate call counts beyond simple 'covered' or 'not covered'.",
-                            "optional": true,
-                            "type": "boolean"
+                          "name": "callCount",
+                          "description": "Collect accurate call counts beyond simple 'covered' or 'not covered'.",
+                          "optional": true,
+                          "type": "boolean"
                         },
-                        {
-                            "name": "detailed",
-                            "description": "Collect block-based coverage.",
-                            "optional": true,
-                            "type": "boolean"
-                        }
-                    ]
+                      {
+                        "name": "detailed",
+                        "description": "Collect block-based coverage.",
+                        "optional": true,
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "allowTriggeredUpdates",
+                        "description": "Allow the backend to send updates on its own initiative",
+                        "optional": true,
+                        "type": "boolean"
+                      }
+                    ],
+                  "returns": [
+                    {
+                      "name": "timestamp",
+                      "description": "Monotonically increasing time (in seconds) when the coverage update was taken in the backend.",
+                      "type": "number"
+                    }
+                  ]
                 },
                 {
                     "name": "startTypeProfile",
@@ -1784,31 +1898,61 @@
                     "name": "takePreciseCoverage",
                     "description": "Collect coverage data for the current isolate, and resets execution counters. Precise code\ncoverage needs to have started.",
                     "returns": [
-                        {
-                            "name": "result",
-                            "description": "Coverage data for the current isolate.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "ScriptCoverage"
-                            }
+                      {
+                        "name": "result",
+                        "description": "Coverage data for the current isolate.",
+                        "type": "array",
+                        "items": {
+                          "$ref": "ScriptCoverage"
                         }
+                      },
+                      {
+                        "name": "timestamp",
+                        "description": "Monotonically increasing time (in seconds) when the coverage update was taken in the backend.",
+                        "type": "number"
+                      }
                     ]
                 },
                 {
                     "name": "takeTypeProfile",
                     "description": "Collect type profile.",
                     "experimental": true,
-                    "returns": [
-                        {
-                            "name": "result",
-                            "description": "Type profile for all scripts since startTypeProfile() was turned on.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "ScriptTypeProfile"
-                            }
-                        }
-                    ]
-                }
+                  "returns": [
+                    {
+                      "name": "result",
+                      "description": "Type profile for all scripts since startTypeProfile() was turned on.",
+                      "type": "array",
+                      "items": {
+                        "$ref": "ScriptTypeProfile"
+                      }
+                    }
+                  ]
+                },
+              {
+                "name": "enableRuntimeCallStats",
+                "description": "Enable run time call stats collection.",
+                "experimental": true
+              },
+              {
+                "name": "disableRuntimeCallStats",
+                "description": "Disable run time call stats collection.",
+                "experimental": true
+              },
+              {
+                "name": "getRuntimeCallStats",
+                "description": "Retrieve run time call stats.",
+                "experimental": true,
+                "returns": [
+                  {
+                    "name": "result",
+                    "description": "Collected counter information.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "CounterInfo"
+                    }
+                  }
+                ]
+              }
             ],
             "events": [
                 {
@@ -1845,17 +1989,42 @@
                         },
                         {
                             "name": "location",
-                            "description": "Location of console.profile().",
-                            "$ref": "Debugger.Location"
+                          "description": "Location of console.profile().",
+                          "$ref": "Debugger.Location"
                         },
-                        {
-                            "name": "title",
-                            "description": "Profile title passed as an argument to console.profile().",
-                            "optional": true,
-                            "type": "string"
-                        }
+                      {
+                        "name": "title",
+                        "description": "Profile title passed as an argument to console.profile().",
+                        "optional": true,
+                        "type": "string"
+                      }
                     ]
-                }
+                },
+              {
+                "name": "preciseCoverageDeltaUpdate",
+                "description": "Reports coverage delta since the last poll (either from an event like this, or from\n`takePreciseCoverage` for the current isolate. May only be sent if precise code\ncoverage has been started. This event can be trigged by the embedder to, for example,\ntrigger collection of coverage data immediatelly at a certain point in time.",
+                "experimental": true,
+                "parameters": [
+                  {
+                    "name": "timestamp",
+                    "description": "Monotonically increasing time (in seconds) when the coverage update was taken in the backend.",
+                    "type": "number"
+                  },
+                  {
+                    "name": "occassion",
+                    "description": "Identifier for distinguishing coverage events.",
+                    "type": "string"
+                  },
+                  {
+                    "name": "result",
+                    "description": "Coverage data for the current isolate.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "ScriptCoverage"
+                    }
+                  }
+                ]
+              }
             ]
         },
         {
@@ -2222,16 +2391,29 @@
                     "experimental": true,
                     "type": "object",
                     "properties": [
-                        {
-                            "name": "name",
-                            "description": "Private property name.",
-                            "type": "string"
-                        },
-                        {
-                            "name": "value",
-                            "description": "The value associated with the private property.",
-                            "$ref": "RemoteObject"
-                        }
+                      {
+                        "name": "name",
+                        "description": "Private property name.",
+                        "type": "string"
+                      },
+                      {
+                        "name": "value",
+                        "description": "The value associated with the private property.",
+                        "optional": true,
+                        "$ref": "RemoteObject"
+                      },
+                      {
+                        "name": "get",
+                        "description": "A function which serves as a getter for the private property,\nor `undefined` if there is no getter (accessor descriptors only).",
+                        "optional": true,
+                        "$ref": "RemoteObject"
+                      },
+                      {
+                        "name": "set",
+                        "description": "A function which serves as a setter for the private property,\nor `undefined` if there is no setter (accessor descriptors only).",
+                        "optional": true,
+                        "$ref": "RemoteObject"
+                      }
                     ]
                 },
                 {
@@ -2679,20 +2861,34 @@
                             "optional": true,
                             "type": "boolean"
                         },
-                        {
-                            "name": "throwOnSideEffect",
-                            "description": "Whether to throw an exception if side effect cannot be ruled out during evaluation.",
-                            "experimental": true,
-                            "optional": true,
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "timeout",
-                            "description": "Terminate execution after timing out (number of milliseconds).",
-                            "experimental": true,
-                            "optional": true,
-                            "$ref": "TimeDelta"
-                        }
+                      {
+                        "name": "throwOnSideEffect",
+                        "description": "Whether to throw an exception if side effect cannot be ruled out during evaluation.\nThis implies `disableBreaks` below.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "timeout",
+                        "description": "Terminate execution after timing out (number of milliseconds).",
+                        "experimental": true,
+                        "optional": true,
+                        "$ref": "TimeDelta"
+                      },
+                      {
+                        "name": "disableBreaks",
+                        "description": "Disable breakpoints during execution.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "replMode",
+                        "description": "Setting this flag to true enables `let` re-declaration and top-level `await`.\nNote that `let` variables can only be re-declared if they originate from\n`replMode` themselves.",
+                        "experimental": true,
+                        "optional": true,
+                        "type": "boolean"
+                      }
                     ],
                     "returns": [
                         {

@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,43 +20,13 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.network.DataReceived;
-import com.github.kklisura.cdt.protocol.events.network.EventSourceMessageReceived;
-import com.github.kklisura.cdt.protocol.events.network.LoadingFailed;
-import com.github.kklisura.cdt.protocol.events.network.LoadingFinished;
-import com.github.kklisura.cdt.protocol.events.network.RequestIntercepted;
-import com.github.kklisura.cdt.protocol.events.network.RequestServedFromCache;
-import com.github.kklisura.cdt.protocol.events.network.RequestWillBeSent;
-import com.github.kklisura.cdt.protocol.events.network.RequestWillBeSentExtraInfo;
-import com.github.kklisura.cdt.protocol.events.network.ResourceChangedPriority;
-import com.github.kklisura.cdt.protocol.events.network.ResponseReceived;
-import com.github.kklisura.cdt.protocol.events.network.ResponseReceivedExtraInfo;
-import com.github.kklisura.cdt.protocol.events.network.SignedExchangeReceived;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketClosed;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketCreated;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketFrameError;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketFrameReceived;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketFrameSent;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketHandshakeResponseReceived;
-import com.github.kklisura.cdt.protocol.events.network.WebSocketWillSendHandshakeRequest;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.network.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.debugger.SearchMatch;
-import com.github.kklisura.cdt.protocol.types.network.AuthChallengeResponse;
-import com.github.kklisura.cdt.protocol.types.network.ConnectionType;
-import com.github.kklisura.cdt.protocol.types.network.Cookie;
-import com.github.kklisura.cdt.protocol.types.network.CookieParam;
-import com.github.kklisura.cdt.protocol.types.network.CookieSameSite;
-import com.github.kklisura.cdt.protocol.types.network.ErrorReason;
-import com.github.kklisura.cdt.protocol.types.network.RequestPattern;
-import com.github.kklisura.cdt.protocol.types.network.ResponseBody;
-import com.github.kklisura.cdt.protocol.types.network.ResponseBodyForInterception;
+import com.github.kklisura.cdt.protocol.types.network.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -372,18 +342,20 @@ public interface Network {
    * @param httpOnly True if cookie is http-only.
    * @param sameSite Cookie SameSite type.
    * @param expires Cookie expiration date, session cookie if not set
+   * @param priority Cookie Priority type.
    */
   @Returns("success")
   Boolean setCookie(
-      @ParamName("name") String name,
-      @ParamName("value") String value,
-      @Optional @ParamName("url") String url,
-      @Optional @ParamName("domain") String domain,
-      @Optional @ParamName("path") String path,
-      @Optional @ParamName("secure") Boolean secure,
-      @Optional @ParamName("httpOnly") Boolean httpOnly,
-      @Optional @ParamName("sameSite") CookieSameSite sameSite,
-      @Optional @ParamName("expires") Double expires);
+          @ParamName("name") String name,
+          @ParamName("value") String value,
+          @Optional @ParamName("url") String url,
+          @Optional @ParamName("domain") String domain,
+          @Optional @ParamName("path") String path,
+          @Optional @ParamName("secure") Boolean secure,
+          @Optional @ParamName("httpOnly") Boolean httpOnly,
+          @Optional @ParamName("sameSite") CookieSameSite sameSite,
+          @Optional @ParamName("expires") Double expires,
+          @Experimental @Optional @ParamName("priority") CookiePriority priority);
 
   /**
    * Sets given cookies.

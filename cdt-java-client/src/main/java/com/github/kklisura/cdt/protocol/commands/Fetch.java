@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,7 @@ package com.github.kklisura.cdt.protocol.commands;
 
 import com.github.kklisura.cdt.protocol.events.fetch.AuthRequired;
 import com.github.kklisura.cdt.protocol.events.fetch.RequestPaused;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.fetch.AuthChallengeResponse;
@@ -34,6 +30,7 @@ import com.github.kklisura.cdt.protocol.types.fetch.HeaderEntry;
 import com.github.kklisura.cdt.protocol.types.fetch.RequestPattern;
 import com.github.kklisura.cdt.protocol.types.fetch.ResponseBody;
 import com.github.kklisura.cdt.protocol.types.network.ErrorReason;
+
 import java.util.List;
 
 /** A domain for letting clients substitute browser's network layer with client code. */
@@ -72,34 +69,35 @@ public interface Fetch {
   void failRequest(
       @ParamName("requestId") String requestId, @ParamName("errorReason") ErrorReason errorReason);
 
-  /**
-   * Provides response to the request.
-   *
-   * @param requestId An id the client received in requestPaused event.
-   * @param responseCode An HTTP response code.
-   * @param responseHeaders Response headers.
-   */
-  void fulfillRequest(
-      @ParamName("requestId") String requestId,
-      @ParamName("responseCode") Integer responseCode,
-      @ParamName("responseHeaders") List<HeaderEntry> responseHeaders);
+    /**
+     * Provides response to the request.
+     *
+     * @param requestId    An id the client received in requestPaused event.
+     * @param responseCode An HTTP response code.
+     */
+    void fulfillRequest(
+            @ParamName("requestId") String requestId, @ParamName("responseCode") Integer responseCode);
 
-  /**
-   * Provides response to the request.
-   *
-   * @param requestId An id the client received in requestPaused event.
-   * @param responseCode An HTTP response code.
-   * @param responseHeaders Response headers.
-   * @param body A response body.
-   * @param responsePhrase A textual representation of responseCode. If absent, a standard phrase
-   *     mathcing responseCode is used.
+    /**
+     * Provides response to the request.
+     *
+     * @param requestId An id the client received in requestPaused event.
+     * @param responseCode An HTTP response code.
+     * @param responseHeaders Response headers.
+     * @param binaryResponseHeaders Alternative way of specifying response headers as a \0-separated
+     *     series of name: value pairs. Prefer the above method unless you need to represent some
+     *     non-UTF8 values that can't be transmitted over the protocol as text.
+     * @param body A response body.
+     * @param responsePhrase A textual representation of responseCode. If absent, a standard phrase
+     *     matching responseCode is used.
    */
   void fulfillRequest(
-      @ParamName("requestId") String requestId,
-      @ParamName("responseCode") Integer responseCode,
-      @ParamName("responseHeaders") List<HeaderEntry> responseHeaders,
-      @Optional @ParamName("body") String body,
-      @Optional @ParamName("responsePhrase") String responsePhrase);
+          @ParamName("requestId") String requestId,
+          @ParamName("responseCode") Integer responseCode,
+          @Optional @ParamName("responseHeaders") List<HeaderEntry> responseHeaders,
+          @Optional @ParamName("binaryResponseHeaders") String binaryResponseHeaders,
+          @Optional @ParamName("body") String body,
+          @Optional @ParamName("responsePhrase") String responsePhrase);
 
   /**
    * Continues the request, optionally modifying some of its parameters.

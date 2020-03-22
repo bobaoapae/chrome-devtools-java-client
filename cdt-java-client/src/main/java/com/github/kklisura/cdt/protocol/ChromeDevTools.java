@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,51 +20,8 @@ package com.github.kklisura.cdt.protocol;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.commands.Accessibility;
-import com.github.kklisura.cdt.protocol.commands.Animation;
-import com.github.kklisura.cdt.protocol.commands.ApplicationCache;
-import com.github.kklisura.cdt.protocol.commands.Audits;
-import com.github.kklisura.cdt.protocol.commands.BackgroundService;
-import com.github.kklisura.cdt.protocol.commands.Browser;
-import com.github.kklisura.cdt.protocol.commands.CSS;
-import com.github.kklisura.cdt.protocol.commands.CacheStorage;
-import com.github.kklisura.cdt.protocol.commands.Cast;
-import com.github.kklisura.cdt.protocol.commands.Console;
-import com.github.kklisura.cdt.protocol.commands.DOM;
-import com.github.kklisura.cdt.protocol.commands.DOMDebugger;
-import com.github.kklisura.cdt.protocol.commands.DOMSnapshot;
-import com.github.kklisura.cdt.protocol.commands.DOMStorage;
-import com.github.kklisura.cdt.protocol.commands.Database;
-import com.github.kklisura.cdt.protocol.commands.Debugger;
-import com.github.kklisura.cdt.protocol.commands.DeviceOrientation;
-import com.github.kklisura.cdt.protocol.commands.Emulation;
-import com.github.kklisura.cdt.protocol.commands.Fetch;
-import com.github.kklisura.cdt.protocol.commands.HeadlessExperimental;
-import com.github.kklisura.cdt.protocol.commands.HeapProfiler;
-import com.github.kklisura.cdt.protocol.commands.IO;
-import com.github.kklisura.cdt.protocol.commands.IndexedDB;
-import com.github.kklisura.cdt.protocol.commands.Input;
-import com.github.kklisura.cdt.protocol.commands.Inspector;
-import com.github.kklisura.cdt.protocol.commands.LayerTree;
-import com.github.kklisura.cdt.protocol.commands.Log;
-import com.github.kklisura.cdt.protocol.commands.Media;
-import com.github.kklisura.cdt.protocol.commands.Memory;
-import com.github.kklisura.cdt.protocol.commands.Network;
-import com.github.kklisura.cdt.protocol.commands.Overlay;
-import com.github.kklisura.cdt.protocol.commands.Page;
-import com.github.kklisura.cdt.protocol.commands.Performance;
-import com.github.kklisura.cdt.protocol.commands.Profiler;
 import com.github.kklisura.cdt.protocol.commands.Runtime;
-import com.github.kklisura.cdt.protocol.commands.Schema;
-import com.github.kklisura.cdt.protocol.commands.Security;
-import com.github.kklisura.cdt.protocol.commands.ServiceWorker;
-import com.github.kklisura.cdt.protocol.commands.Storage;
-import com.github.kklisura.cdt.protocol.commands.SystemInfo;
-import com.github.kklisura.cdt.protocol.commands.Target;
-import com.github.kklisura.cdt.protocol.commands.Tethering;
-import com.github.kklisura.cdt.protocol.commands.Tracing;
-import com.github.kklisura.cdt.protocol.commands.WebAudio;
-import com.github.kklisura.cdt.protocol.commands.WebAuthn;
+import com.github.kklisura.cdt.protocol.commands.*;
 
 public interface ChromeDevTools {
 

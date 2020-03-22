@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,19 +23,11 @@ package com.github.kklisura.cdt.protocol.commands;
 import com.github.kklisura.cdt.protocol.events.tracing.BufferUsage;
 import com.github.kklisura.cdt.protocol.events.tracing.DataCollected;
 import com.github.kklisura.cdt.protocol.events.tracing.TracingComplete;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.tracing.RequestMemoryDump;
-import com.github.kklisura.cdt.protocol.types.tracing.StartTransferMode;
-import com.github.kklisura.cdt.protocol.types.tracing.StreamCompression;
-import com.github.kklisura.cdt.protocol.types.tracing.StreamFormat;
-import com.github.kklisura.cdt.protocol.types.tracing.TraceConfig;
+import com.github.kklisura.cdt.protocol.types.tracing.*;
+
 import java.util.List;
 
 @Experimental
@@ -49,25 +41,36 @@ public interface Tracing {
   @ReturnTypeParameter(String.class)
   List<String> getCategories();
 
-  /**
-   * Record a clock sync marker in the trace.
-   *
-   * @param syncId The ID of this clock sync marker
-   */
-  void recordClockSyncMarker(@ParamName("syncId") String syncId);
+    /**
+     * Record a clock sync marker in the trace.
+     *
+     * @param syncId The ID of this clock sync marker
+     */
+    void recordClockSyncMarker(@ParamName("syncId") String syncId);
 
-  /** Request a global memory dump. */
-  RequestMemoryDump requestMemoryDump();
+    /**
+     * Request a global memory dump.
+     */
+    RequestMemoryDump requestMemoryDump();
 
-  /** Start trace events collection. */
-  void start();
+    /**
+     * Request a global memory dump.
+     *
+     * @param deterministic Enables more deterministic results by forcing garbage collection
+     */
+    RequestMemoryDump requestMemoryDump(@Optional @ParamName("deterministic") Boolean deterministic);
 
-  /**
-   * Start trace events collection.
-   *
-   * @param categories Category/tag filter
-   * @param options Tracing options
-   * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this
+    /**
+     * Start trace events collection.
+     */
+    void start();
+
+    /**
+     * Start trace events collection.
+     *
+     * @param categories Category/tag filter
+     * @param options Tracing options
+     * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this
    *     interval, specified in milliseconds
    * @param transferMode Whether to report trace events as series of dataCollected events or to save
    *     trace to a stream (defaults to `ReportEvents`).

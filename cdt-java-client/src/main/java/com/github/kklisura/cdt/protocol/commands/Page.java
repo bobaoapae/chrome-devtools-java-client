@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,57 +20,13 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.page.CompilationCacheProduced;
-import com.github.kklisura.cdt.protocol.events.page.DomContentEventFired;
-import com.github.kklisura.cdt.protocol.events.page.DownloadWillBegin;
-import com.github.kklisura.cdt.protocol.events.page.FileChooserOpened;
-import com.github.kklisura.cdt.protocol.events.page.FrameAttached;
-import com.github.kklisura.cdt.protocol.events.page.FrameClearedScheduledNavigation;
-import com.github.kklisura.cdt.protocol.events.page.FrameDetached;
-import com.github.kklisura.cdt.protocol.events.page.FrameNavigated;
-import com.github.kklisura.cdt.protocol.events.page.FrameRequestedNavigation;
-import com.github.kklisura.cdt.protocol.events.page.FrameResized;
-import com.github.kklisura.cdt.protocol.events.page.FrameScheduledNavigation;
-import com.github.kklisura.cdt.protocol.events.page.FrameStartedLoading;
-import com.github.kklisura.cdt.protocol.events.page.FrameStoppedLoading;
-import com.github.kklisura.cdt.protocol.events.page.InterstitialHidden;
-import com.github.kklisura.cdt.protocol.events.page.InterstitialShown;
-import com.github.kklisura.cdt.protocol.events.page.JavascriptDialogClosed;
-import com.github.kklisura.cdt.protocol.events.page.JavascriptDialogOpening;
-import com.github.kklisura.cdt.protocol.events.page.LifecycleEvent;
-import com.github.kklisura.cdt.protocol.events.page.LoadEventFired;
-import com.github.kklisura.cdt.protocol.events.page.NavigatedWithinDocument;
-import com.github.kklisura.cdt.protocol.events.page.ScreencastFrame;
-import com.github.kklisura.cdt.protocol.events.page.ScreencastVisibilityChanged;
-import com.github.kklisura.cdt.protocol.events.page.WindowOpen;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.page.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.debugger.SearchMatch;
-import com.github.kklisura.cdt.protocol.types.page.AppManifest;
-import com.github.kklisura.cdt.protocol.types.page.CaptureScreenshotFormat;
-import com.github.kklisura.cdt.protocol.types.page.CaptureSnapshotFormat;
-import com.github.kklisura.cdt.protocol.types.page.FontFamilies;
-import com.github.kklisura.cdt.protocol.types.page.FontSizes;
-import com.github.kklisura.cdt.protocol.types.page.FrameResourceTree;
-import com.github.kklisura.cdt.protocol.types.page.FrameTree;
-import com.github.kklisura.cdt.protocol.types.page.HandleFileChooserAction;
-import com.github.kklisura.cdt.protocol.types.page.LayoutMetrics;
-import com.github.kklisura.cdt.protocol.types.page.Navigate;
-import com.github.kklisura.cdt.protocol.types.page.NavigationHistory;
-import com.github.kklisura.cdt.protocol.types.page.PrintToPDF;
-import com.github.kklisura.cdt.protocol.types.page.PrintToPDFTransferMode;
-import com.github.kklisura.cdt.protocol.types.page.ResourceContent;
-import com.github.kklisura.cdt.protocol.types.page.SetDownloadBehaviorBehavior;
-import com.github.kklisura.cdt.protocol.types.page.SetWebLifecycleStateState;
-import com.github.kklisura.cdt.protocol.types.page.StartScreencastFormat;
-import com.github.kklisura.cdt.protocol.types.page.TransitionType;
-import com.github.kklisura.cdt.protocol.types.page.Viewport;
+import com.github.kklisura.cdt.protocol.types.page.*;
+
 import java.util.List;
 
 /** Actions and events related to the inspected page belong to the page domain. */
@@ -170,28 +126,42 @@ public interface Page {
       @Optional @ParamName("worldName") String worldName,
       @Optional @ParamName("grantUniveralAccess") Boolean grantUniveralAccess);
 
-  /** Disables page domain notifications. */
-  void disable();
+    /**
+     * Disables page domain notifications.
+     */
+    void disable();
 
-  /** Enables page domain notifications. */
-  void enable();
+    /**
+     * Enables page domain notifications.
+     */
+    void enable();
 
-  AppManifest getAppManifest();
+    AppManifest getAppManifest();
 
-  @Experimental
-  @Returns("errors")
-  @ReturnTypeParameter(String.class)
-  List<String> getInstallabilityErrors();
+    @Experimental
+    @Returns("installabilityErrors")
+    @ReturnTypeParameter(InstallabilityError.class)
+    List<InstallabilityError> getInstallabilityErrors();
 
-  /** Returns present frame tree structure. */
-  @Returns("frameTree")
-  FrameTree getFrameTree();
+    @Experimental
+    @Returns("primaryIcon")
+    String getManifestIcons();
 
-  /** Returns metrics relating to the layouting of the page, such as viewport bounds/scale. */
-  LayoutMetrics getLayoutMetrics();
+    /**
+     * Returns present frame tree structure.
+     */
+    @Returns("frameTree")
+    FrameTree getFrameTree();
 
-  /** Returns navigation history for the current page. */
-  NavigationHistory getNavigationHistory();
+    /**
+     * Returns metrics relating to the layouting of the page, such as viewport bounds/scale.
+     */
+    LayoutMetrics getLayoutMetrics();
+
+    /**
+     * Returns navigation history for the current page.
+     */
+    NavigationHistory getNavigationHistory();
 
   /** Resets navigation history for the current page. */
   void resetNavigationHistory();
@@ -235,19 +205,21 @@ public interface Page {
    */
   Navigate navigate(@ParamName("url") String url);
 
-  /**
-   * Navigates current page to the given URL.
-   *
-   * @param url URL to navigate the page to.
-   * @param referrer Referrer URL.
-   * @param transitionType Intended transition type.
-   * @param frameId Frame id to navigate, if not specified navigates the top frame.
-   */
-  Navigate navigate(
-      @ParamName("url") String url,
-      @Optional @ParamName("referrer") String referrer,
-      @Optional @ParamName("transitionType") TransitionType transitionType,
-      @Optional @ParamName("frameId") String frameId);
+    /**
+     * Navigates current page to the given URL.
+     *
+     * @param url            URL to navigate the page to.
+     * @param referrer       Referrer URL.
+     * @param transitionType Intended transition type.
+     * @param frameId        Frame id to navigate, if not specified navigates the top frame.
+     * @param referrerPolicy Referrer-policy used for the navigation.
+     */
+    Navigate navigate(
+            @ParamName("url") String url,
+            @Optional @ParamName("referrer") String referrer,
+            @Optional @ParamName("transitionType") TransitionType transitionType,
+            @Optional @ParamName("frameId") String frameId,
+            @Experimental @Optional @ParamName("referrerPolicy") ReferrerPolicy referrerPolicy);
 
   /**
    * Navigates current page to the given history entry.
@@ -538,35 +510,15 @@ public interface Page {
   @Experimental
   void waitForDebugger();
 
-  /**
-   * Intercept file chooser requests and transfer control to protocol clients. When file chooser
-   * interception is enabled, native file chooser dialog is not shown. Instead, a protocol event
-   * `Page.fileChooserOpened` is emitted. File chooser can be handled with `page.handleFileChooser`
-   * command.
+    /**
+     * Intercept file chooser requests and transfer control to protocol clients. When file chooser
+     * interception is enabled, native file chooser dialog is not shown. Instead, a protocol event
+   * `Page.fileChooserOpened` is emitted.
    *
    * @param enabled
    */
   @Experimental
   void setInterceptFileChooserDialog(@ParamName("enabled") Boolean enabled);
-
-  /**
-   * Accepts or cancels an intercepted file chooser dialog.
-   *
-   * @param action
-   */
-  @Experimental
-  void handleFileChooser(@ParamName("action") HandleFileChooserAction action);
-
-  /**
-   * Accepts or cancels an intercepted file chooser dialog.
-   *
-   * @param action
-   * @param files Array of absolute file paths to set, only respected with `accept` action.
-   */
-  @Experimental
-  void handleFileChooser(
-      @ParamName("action") HandleFileChooserAction action,
-      @Optional @ParamName("files") List<String> files);
 
   @EventName("domContentEventFired")
   EventListener onDomContentEventFired(EventHandler<DomContentEventFired> eventListener);

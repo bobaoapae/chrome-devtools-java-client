@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.webauthn;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,25 +24,31 @@ import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 
 public class VirtualAuthenticatorOptions {
 
-  private AuthenticatorProtocol protocol;
+    private AuthenticatorProtocol protocol;
 
-  private AuthenticatorTransport transport;
+    private AuthenticatorTransport transport;
 
-  private Boolean hasResidentKey;
+    @Optional
+    private Boolean hasResidentKey;
 
-  private Boolean hasUserVerification;
+    @Optional
+    private Boolean hasUserVerification;
 
-  @Optional private Boolean automaticPresenceSimulation;
+    @Optional
+    private Boolean automaticPresenceSimulation;
 
-  public AuthenticatorProtocol getProtocol() {
-    return protocol;
-  }
+    @Optional
+    private Boolean isUserVerified;
 
-  public void setProtocol(AuthenticatorProtocol protocol) {
-    this.protocol = protocol;
-  }
+    public AuthenticatorProtocol getProtocol() {
+        return protocol;
+    }
 
-  public AuthenticatorTransport getTransport() {
+    public void setProtocol(AuthenticatorProtocol protocol) {
+        this.protocol = protocol;
+    }
+
+    public AuthenticatorTransport getTransport() {
     return transport;
   }
 
@@ -50,35 +56,55 @@ public class VirtualAuthenticatorOptions {
     this.transport = transport;
   }
 
-  public Boolean getHasResidentKey() {
-    return hasResidentKey;
-  }
+    /**
+     * Defaults to false.
+     */
+    public Boolean getHasResidentKey() {
+        return hasResidentKey;
+    }
 
-  public void setHasResidentKey(Boolean hasResidentKey) {
-    this.hasResidentKey = hasResidentKey;
-  }
+    /** Defaults to false. */
+    public void setHasResidentKey(Boolean hasResidentKey) {
+        this.hasResidentKey = hasResidentKey;
+    }
 
-  public Boolean getHasUserVerification() {
-    return hasUserVerification;
-  }
+    /** Defaults to false. */
+    public Boolean getHasUserVerification() {
+        return hasUserVerification;
+    }
 
-  public void setHasUserVerification(Boolean hasUserVerification) {
-    this.hasUserVerification = hasUserVerification;
-  }
+    /** Defaults to false. */
+    public void setHasUserVerification(Boolean hasUserVerification) {
+        this.hasUserVerification = hasUserVerification;
+    }
 
   /**
    * If set to true, tests of user presence will succeed immediately. Otherwise, they will not be
    * resolved. Defaults to true.
    */
   public Boolean getAutomaticPresenceSimulation() {
-    return automaticPresenceSimulation;
+      return automaticPresenceSimulation;
   }
 
-  /**
-   * If set to true, tests of user presence will succeed immediately. Otherwise, they will not be
-   * resolved. Defaults to true.
-   */
-  public void setAutomaticPresenceSimulation(Boolean automaticPresenceSimulation) {
-    this.automaticPresenceSimulation = automaticPresenceSimulation;
-  }
+    /**
+     * If set to true, tests of user presence will succeed immediately. Otherwise, they will not be
+     * resolved. Defaults to true.
+     */
+    public void setAutomaticPresenceSimulation(Boolean automaticPresenceSimulation) {
+        this.automaticPresenceSimulation = automaticPresenceSimulation;
+    }
+
+    /**
+     * Sets whether User Verification succeeds or fails for an authenticator. Defaults to false.
+     */
+    public Boolean getIsUserVerified() {
+        return isUserVerified;
+    }
+
+    /**
+     * Sets whether User Verification succeeds or fails for an authenticator. Defaults to false.
+     */
+    public void setIsUserVerified(Boolean isUserVerified) {
+        this.isUserVerified = isUserVerified;
+    }
 }

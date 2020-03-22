@@ -4,12 +4,12 @@
 
     <groupId>com.github.kklisura.cdt</groupId>
     <artifactId>cdt-java-client</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <packaging>jar</packaging>
 
     <name>cdt-java-client</name>
     <description>Chrome DevTools java client</description>
-    <url>https://github.com/kklisura/chrome-devtools-java-client</url>
+    <url>https://github.com/bobaoapae/chrome-devtools-java-client.git</url>
 
     <licenses>
         <license>
@@ -23,23 +23,30 @@
             <name>Kenan Klisura</name>
             <email>kklisura@hotmail.com</email>
         </developer>
+        <developer>
+            <name>João Vitor Borges</name>
+            <email>joao@zapia.com.br</email>
+        </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/kklisura/chrome-devtools-java-client.git</connection>
+        <connection>scm:git:git://github.com:bobaoapae/chrome-devtools-java-client.git</connection>
         <developerConnection>scm:git:ssh://github.com:kklisura/chrome-devtools-java-client.git</developerConnection>
         <url>http://github.com/kklisura/chrome-devtools-java-client/tree/master</url>
     </scm>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>zapia.com.br</id>
+            <name>zapia.com.br</name>
+            <url>http://zapia.com.br:8090/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>zapia.com.br</id>
+            <name>zapia.com.br</name>
+            <url>http://zapia.com.br:8090/repository/maven-snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
     </distributionManagement>
 
     <properties>
@@ -239,20 +246,6 @@
                                 <configuration>
                                     <doclint>none</doclint>
                                 </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
                             </execution>
                         </executions>
                     </plugin>

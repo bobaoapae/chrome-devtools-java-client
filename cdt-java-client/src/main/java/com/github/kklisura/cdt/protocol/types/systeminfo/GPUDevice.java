@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.systeminfo;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,32 @@ package com.github.kklisura.cdt.protocol.types.systeminfo;
  * #L%
  */
 
-/** Describes a single graphics processor (GPU). */
+import com.github.kklisura.cdt.protocol.support.annotations.Optional;
+
+/**
+ * Describes a single graphics processor (GPU).
+ */
 public class GPUDevice {
 
-  private Double vendorId;
+    private Double vendorId;
 
-  private Double deviceId;
+    private Double deviceId;
 
-  private String vendorString;
+    @Optional
+    private Double subSysId;
 
-  private String deviceString;
+    @Optional
+    private Double revision;
 
-  private String driverVendor;
+    private String vendorString;
 
-  private String driverVersion;
+    private String deviceString;
 
-  /** PCI ID of the GPU vendor, if available; 0 otherwise. */
+    private String driverVendor;
+
+    private String driverVersion;
+
+    /** PCI ID of the GPU vendor, if available; 0 otherwise. */
   public Double getVendorId() {
     return vendorId;
   }
@@ -45,24 +55,60 @@ public class GPUDevice {
     this.vendorId = vendorId;
   }
 
-  /** PCI ID of the GPU device, if available; 0 otherwise. */
-  public Double getDeviceId() {
-    return deviceId;
-  }
+    /**
+     * PCI ID of the GPU device, if available; 0 otherwise.
+     */
+    public Double getDeviceId() {
+        return deviceId;
+    }
 
-  /** PCI ID of the GPU device, if available; 0 otherwise. */
-  public void setDeviceId(Double deviceId) {
-    this.deviceId = deviceId;
-  }
+    /**
+     * PCI ID of the GPU device, if available; 0 otherwise.
+     */
+    public void setDeviceId(Double deviceId) {
+        this.deviceId = deviceId;
+    }
 
-  /** String description of the GPU vendor, if the PCI ID is not available. */
-  public String getVendorString() {
-    return vendorString;
-  }
+    /**
+     * Sub sys ID of the GPU, only available on Windows.
+     */
+    public Double getSubSysId() {
+        return subSysId;
+    }
 
-  /** String description of the GPU vendor, if the PCI ID is not available. */
-  public void setVendorString(String vendorString) {
-    this.vendorString = vendorString;
+    /**
+     * Sub sys ID of the GPU, only available on Windows.
+     */
+    public void setSubSysId(Double subSysId) {
+        this.subSysId = subSysId;
+    }
+
+    /**
+     * Revision of the GPU, only available on Windows.
+     */
+    public Double getRevision() {
+        return revision;
+    }
+
+    /**
+     * Revision of the GPU, only available on Windows.
+     */
+    public void setRevision(Double revision) {
+        this.revision = revision;
+    }
+
+    /**
+     * String description of the GPU vendor, if the PCI ID is not available.
+     */
+    public String getVendorString() {
+        return vendorString;
+    }
+
+    /**
+     * String description of the GPU vendor, if the PCI ID is not available.
+     */
+    public void setVendorString(String vendorString) {
+        this.vendorString = vendorString;
   }
 
   /** String description of the GPU device, if the PCI ID is not available. */

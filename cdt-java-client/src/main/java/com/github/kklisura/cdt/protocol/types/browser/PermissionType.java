@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.browser;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,38 +23,40 @@ package com.github.kklisura.cdt.protocol.types.browser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum PermissionType {
-  @JsonProperty("accessibilityEvents")
-  ACCESSIBILITY_EVENTS,
-  @JsonProperty("audioCapture")
-  AUDIO_CAPTURE,
-  @JsonProperty("backgroundSync")
-  BACKGROUND_SYNC,
-  @JsonProperty("backgroundFetch")
-  BACKGROUND_FETCH,
-  @JsonProperty("clipboardRead")
-  CLIPBOARD_READ,
-  @JsonProperty("clipboardWrite")
-  CLIPBOARD_WRITE,
-  @JsonProperty("durableStorage")
-  DURABLE_STORAGE,
-  @JsonProperty("flash")
-  FLASH,
-  @JsonProperty("geolocation")
-  GEOLOCATION,
-  @JsonProperty("midi")
-  MIDI,
-  @JsonProperty("midiSysex")
-  MIDI_SYSEX,
-  @JsonProperty("notifications")
-  NOTIFICATIONS,
-  @JsonProperty("paymentHandler")
-  PAYMENT_HANDLER,
-  @JsonProperty("periodicBackgroundSync")
-  PERIODIC_BACKGROUND_SYNC,
-  @JsonProperty("protectedMediaIdentifier")
-  PROTECTED_MEDIA_IDENTIFIER,
-  @JsonProperty("sensors")
-  SENSORS,
+    @JsonProperty("accessibilityEvents")
+    ACCESSIBILITY_EVENTS,
+    @JsonProperty("audioCapture")
+    AUDIO_CAPTURE,
+    @JsonProperty("backgroundSync")
+    BACKGROUND_SYNC,
+    @JsonProperty("backgroundFetch")
+    BACKGROUND_FETCH,
+    @JsonProperty("clipboardReadWrite")
+    CLIPBOARD_READ_WRITE,
+    @JsonProperty("clipboardSanitizedWrite")
+    CLIPBOARD_SANITIZED_WRITE,
+    @JsonProperty("durableStorage")
+    DURABLE_STORAGE,
+    @JsonProperty("flash")
+    FLASH,
+    @JsonProperty("geolocation")
+    GEOLOCATION,
+    @JsonProperty("midi")
+    MIDI,
+    @JsonProperty("midiSysex")
+    MIDI_SYSEX,
+    @JsonProperty("nfc")
+    NFC,
+    @JsonProperty("notifications")
+    NOTIFICATIONS,
+    @JsonProperty("paymentHandler")
+    PAYMENT_HANDLER,
+    @JsonProperty("periodicBackgroundSync")
+    PERIODIC_BACKGROUND_SYNC,
+    @JsonProperty("protectedMediaIdentifier")
+    PROTECTED_MEDIA_IDENTIFIER,
+    @JsonProperty("sensors")
+    SENSORS,
   @JsonProperty("videoCapture")
   VIDEO_CAPTURE,
   @JsonProperty("idleDetection")

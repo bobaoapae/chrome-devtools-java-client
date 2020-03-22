@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ package com.github.kklisura.cdt.protocol.commands;
 
 import com.github.kklisura.cdt.protocol.events.security.CertificateError;
 import com.github.kklisura.cdt.protocol.events.security.SecurityStateChanged;
+import com.github.kklisura.cdt.protocol.events.security.VisibleSecurityStateChanged;
 import com.github.kklisura.cdt.protocol.support.annotations.EventName;
 import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
@@ -66,17 +67,27 @@ public interface Security {
   @Deprecated
   void setOverrideCertificateErrors(@ParamName("override") Boolean override);
 
-  /**
-   * There is a certificate error. If overriding certificate errors is enabled, then it should be
-   * handled with the `handleCertificateError` command. Note: this event does not fire if the
-   * certificate error has been allowed internally. Only one client per target should override
-   * certificate errors at the same time.
-   */
-  @EventName("certificateError")
-  @Deprecated
-  EventListener onCertificateError(EventHandler<CertificateError> eventListener);
+    /**
+     * There is a certificate error. If overriding certificate errors is enabled, then it should be
+     * handled with the `handleCertificateError` command. Note: this event does not fire if the
+     * certificate error has been allowed internally. Only one client per target should override
+     * certificate errors at the same time.
+     */
+    @EventName("certificateError")
+    @Deprecated
+    EventListener onCertificateError(EventHandler<CertificateError> eventListener);
 
-  /** The security state of the page changed. */
-  @EventName("securityStateChanged")
-  EventListener onSecurityStateChanged(EventHandler<SecurityStateChanged> eventListener);
+    /**
+     * The security state of the page changed.
+     */
+    @EventName("visibleSecurityStateChanged")
+    @Experimental
+    EventListener onVisibleSecurityStateChanged(
+            EventHandler<VisibleSecurityStateChanged> eventListener);
+
+    /**
+     * The security state of the page changed.
+     */
+    @EventName("securityStateChanged")
+    EventListener onSecurityStateChanged(EventHandler<SecurityStateChanged> eventListener);
 }

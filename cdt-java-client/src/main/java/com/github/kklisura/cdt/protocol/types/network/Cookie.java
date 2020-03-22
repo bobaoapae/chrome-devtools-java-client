@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.network;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.github.kklisura.cdt.protocol.types.network;
  * #L%
  */
 
+import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 
 /** Cookie object */
@@ -35,25 +36,33 @@ public class Cookie {
 
   private Double expires;
 
-  private Integer size;
+    private Integer size;
 
-  private Boolean httpOnly;
+    private Boolean httpOnly;
 
-  private Boolean secure;
+    private Boolean secure;
 
-  private Boolean session;
+    private Boolean session;
 
-  @Optional private CookieSameSite sameSite;
+    @Optional
+    private CookieSameSite sameSite;
 
-  /** Cookie name. */
-  public String getName() {
-    return name;
-  }
+    @Experimental
+    private CookiePriority priority;
 
-  /** Cookie name. */
-  public void setName(String name) {
-    this.name = name;
-  }
+    /**
+     * Cookie name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Cookie name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
   /** Cookie value. */
   public String getValue() {
@@ -135,13 +144,31 @@ public class Cookie {
     this.session = session;
   }
 
-  /** Cookie SameSite type. */
-  public CookieSameSite getSameSite() {
-    return sameSite;
-  }
+    /**
+     * Cookie SameSite type.
+     */
+    public CookieSameSite getSameSite() {
+        return sameSite;
+    }
 
-  /** Cookie SameSite type. */
-  public void setSameSite(CookieSameSite sameSite) {
-    this.sameSite = sameSite;
-  }
+    /**
+     * Cookie SameSite type.
+     */
+    public void setSameSite(CookieSameSite sameSite) {
+        this.sameSite = sameSite;
+    }
+
+    /**
+     * Cookie Priority
+     */
+    public CookiePriority getPriority() {
+        return priority;
+    }
+
+    /**
+     * Cookie Priority
+     */
+    public void setPriority(CookiePriority priority) {
+        this.priority = priority;
+    }
 }

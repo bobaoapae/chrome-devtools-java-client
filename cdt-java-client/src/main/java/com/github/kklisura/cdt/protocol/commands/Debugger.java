@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,15 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.debugger.BreakpointResolved;
-import com.github.kklisura.cdt.protocol.events.debugger.Paused;
-import com.github.kklisura.cdt.protocol.events.debugger.Resumed;
-import com.github.kklisura.cdt.protocol.events.debugger.ScriptFailedToParse;
-import com.github.kklisura.cdt.protocol.events.debugger.ScriptParsed;
-import com.github.kklisura.cdt.protocol.support.annotations.EventName;
-import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
-import com.github.kklisura.cdt.protocol.support.annotations.Optional;
-import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.support.annotations.ReturnTypeParameter;
-import com.github.kklisura.cdt.protocol.support.annotations.Returns;
+import com.github.kklisura.cdt.protocol.events.debugger.*;
+import com.github.kklisura.cdt.protocol.support.annotations.*;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.debugger.BreakLocation;
-import com.github.kklisura.cdt.protocol.types.debugger.ContinueToLocationTargetCallFrames;
-import com.github.kklisura.cdt.protocol.types.debugger.EvaluateOnCallFrame;
-import com.github.kklisura.cdt.protocol.types.debugger.Location;
-import com.github.kklisura.cdt.protocol.types.debugger.RestartFrame;
-import com.github.kklisura.cdt.protocol.types.debugger.ScriptPosition;
-import com.github.kklisura.cdt.protocol.types.debugger.SearchMatch;
-import com.github.kklisura.cdt.protocol.types.debugger.SetBreakpoint;
-import com.github.kklisura.cdt.protocol.types.debugger.SetBreakpointByUrl;
-import com.github.kklisura.cdt.protocol.types.debugger.SetInstrumentationBreakpointInstrumentation;
-import com.github.kklisura.cdt.protocol.types.debugger.SetPauseOnExceptionsState;
-import com.github.kklisura.cdt.protocol.types.debugger.SetScriptSource;
+import com.github.kklisura.cdt.protocol.types.debugger.*;
 import com.github.kklisura.cdt.protocol.types.runtime.CallArgument;
 import com.github.kklisura.cdt.protocol.types.runtime.StackTrace;
 import com.github.kklisura.cdt.protocol.types.runtime.StackTraceId;
+
 import java.util.List;
 
 /**
@@ -155,26 +136,34 @@ public interface Debugger {
   @Returns("locations")
   @ReturnTypeParameter(BreakLocation.class)
   List<BreakLocation> getPossibleBreakpoints(
-      @ParamName("start") Location start,
-      @Optional @ParamName("end") Location end,
-      @Optional @ParamName("restrictToFunction") Boolean restrictToFunction);
+          @ParamName("start") Location start,
+          @Optional @ParamName("end") Location end,
+          @Optional @ParamName("restrictToFunction") Boolean restrictToFunction);
 
-  /**
-   * Returns source for the script with given id.
-   *
-   * @param scriptId Id of the script to get source for.
-   */
-  @Returns("scriptSource")
-  String getScriptSource(@ParamName("scriptId") String scriptId);
+    /**
+     * Returns source for the script with given id.
+     *
+     * @param scriptId Id of the script to get source for.
+     */
+    ScriptSource getScriptSource(@ParamName("scriptId") String scriptId);
 
-  /**
-   * Returns stack trace with given `stackTraceId`.
-   *
-   * @param stackTraceId
-   */
-  @Experimental
-  @Returns("stackTrace")
-  StackTrace getStackTrace(@ParamName("stackTraceId") StackTraceId stackTraceId);
+    /**
+     * This command is deprecated. Use getScriptSource instead.
+     *
+     * @param scriptId Id of the Wasm script to get source for.
+     */
+    @Deprecated
+    @Returns("bytecode")
+    String getWasmBytecode(@ParamName("scriptId") String scriptId);
+
+    /**
+     * Returns stack trace with given `stackTraceId`.
+     *
+     * @param stackTraceId
+     */
+    @Experimental
+    @Returns("stackTrace")
+    StackTrace getStackTrace(@ParamName("stackTraceId") StackTraceId stackTraceId);
 
   /** Stops on the next JavaScript statement. */
   void pause();
@@ -183,6 +172,7 @@ public interface Debugger {
    * @param parentStackTraceId Debugger will pause when async call with given stack trace is
    *     started.
    */
+  @Deprecated
   @Experimental
   void pauseOnAsyncCall(@ParamName("parentStackTraceId") StackTraceId parentStackTraceId);
 
@@ -193,25 +183,38 @@ public interface Debugger {
    */
   void removeBreakpoint(@ParamName("breakpointId") String breakpointId);
 
-  /**
-   * Restarts particular call frame from the beginning.
-   *
-   * @param callFrameId Call frame identifier to evaluate on.
-   */
-  RestartFrame restartFrame(@ParamName("callFrameId") String callFrameId);
+    /**
+     * Restarts particular call frame from the beginning.
+     *
+     * @param callFrameId Call frame identifier to evaluate on.
+     */
+    RestartFrame restartFrame(@ParamName("callFrameId") String callFrameId);
 
-  /** Resumes JavaScript execution. */
-  void resume();
+    /**
+     * Resumes JavaScript execution.
+     */
+    void resume();
 
-  /**
-   * Searches for given string in script content.
-   *
-   * @param scriptId Id of the script to search in.
-   * @param query String to search for.
-   */
-  @Returns("result")
-  @ReturnTypeParameter(SearchMatch.class)
-  List<SearchMatch> searchInContent(
+    /**
+     * Resumes JavaScript execution.
+     *
+     * @param terminateOnResume Set to true to terminate execution upon resuming execution. In
+     *                          contrast to Runtime.terminateExecution, this will allows to execute further JavaScript
+     *                          (i.e. via evaluation) until execution of the paused code is actually resumed, at which
+     *                          point termination is triggered. If execution is currently not paused, this parameter has no
+     *                          effect.
+     */
+    void resume(@Optional @ParamName("terminateOnResume") Boolean terminateOnResume);
+
+    /**
+     * Searches for given string in script content.
+     *
+     * @param scriptId Id of the script to search in.
+     * @param query    String to search for.
+     */
+    @Returns("result")
+    @ReturnTypeParameter(SearchMatch.class)
+    List<SearchMatch> searchInContent(
       @ParamName("scriptId") String scriptId, @ParamName("query") String query);
 
   /**
@@ -412,14 +415,16 @@ public interface Debugger {
       @ParamName("newValue") CallArgument newValue,
       @ParamName("callFrameId") String callFrameId);
 
-  /** Steps into the function call. */
-  void stepInto();
+    /**
+     * Steps into the function call.
+     */
+    void stepInto();
 
-  /**
-   * Steps into the function call.
+    /**
+     * Steps into the function call.
    *
-   * @param breakOnAsyncCall Debugger will issue additional Debugger.paused notification if any
-   *     async task is scheduled before next pause.
+   * @param breakOnAsyncCall Debugger will pause on the execution of the first async task which was
+   *     scheduled before next pause.
    */
   void stepInto(@Experimental @Optional @ParamName("breakOnAsyncCall") Boolean breakOnAsyncCall);
 

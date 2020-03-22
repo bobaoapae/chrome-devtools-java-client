@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.browser;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,22 +30,28 @@ import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 @Experimental
 public class PermissionDescriptor {
 
-  private String name;
+    private String name;
 
-  @Optional private Boolean sysex;
+    @Optional
+    private Boolean sysex;
 
-  @Optional private Boolean userVisibleOnly;
+    @Optional
+    private Boolean userVisibleOnly;
 
-  @Optional private String type;
+    @Optional
+    private String type;
 
-  /**
-   * Name of permission. See
-   * https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl
-   * for valid permission names.
-   */
-  public String getName() {
-    return name;
-  }
+    @Optional
+    private Boolean allowWithoutSanitization;
+
+    /**
+     * Name of permission. See
+     * https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl
+     * for valid permission names.
+     */
+    public String getName() {
+        return name;
+    }
 
   /**
    * Name of permission. See
@@ -82,13 +88,31 @@ public class PermissionDescriptor {
     this.userVisibleOnly = userVisibleOnly;
   }
 
-  /** For "wake-lock" permission, must specify type as either "screen" or "system". */
-  public String getType() {
-    return type;
-  }
+    /**
+     * For "wake-lock" permission, must specify type as either "screen" or "system".
+     */
+    public String getType() {
+        return type;
+    }
 
-  /** For "wake-lock" permission, must specify type as either "screen" or "system". */
-  public void setType(String type) {
-    this.type = type;
-  }
+    /**
+     * For "wake-lock" permission, must specify type as either "screen" or "system".
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * For "clipboard" permission, may specify allowWithoutSanitization.
+     */
+    public Boolean getAllowWithoutSanitization() {
+        return allowWithoutSanitization;
+    }
+
+    /**
+     * For "clipboard" permission, may specify allowWithoutSanitization.
+     */
+    public void setAllowWithoutSanitization(Boolean allowWithoutSanitization) {
+        this.allowWithoutSanitization = allowWithoutSanitization;
+    }
 }

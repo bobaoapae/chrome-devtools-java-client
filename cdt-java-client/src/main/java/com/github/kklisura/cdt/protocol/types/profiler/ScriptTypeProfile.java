@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.types.profiler;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.github.kklisura.cdt.protocol.types.profiler;
  */
 
 import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
+
 import java.util.List;
 
 /** Type profile data collected during runtime for a JavaScript script. */

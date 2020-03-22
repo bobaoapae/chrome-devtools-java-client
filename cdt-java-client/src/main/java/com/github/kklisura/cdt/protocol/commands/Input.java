@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,8 @@ package com.github.kklisura.cdt.protocol.commands;
 import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 import com.github.kklisura.cdt.protocol.support.annotations.Optional;
 import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
-import com.github.kklisura.cdt.protocol.types.input.DispatchKeyEventType;
-import com.github.kklisura.cdt.protocol.types.input.DispatchMouseEventButton;
-import com.github.kklisura.cdt.protocol.types.input.DispatchMouseEventPointerType;
-import com.github.kklisura.cdt.protocol.types.input.DispatchMouseEventType;
-import com.github.kklisura.cdt.protocol.types.input.DispatchTouchEventType;
-import com.github.kklisura.cdt.protocol.types.input.EmulateTouchFromMouseEventButton;
-import com.github.kklisura.cdt.protocol.types.input.EmulateTouchFromMouseEventType;
-import com.github.kklisura.cdt.protocol.types.input.GestureSourceType;
-import com.github.kklisura.cdt.protocol.types.input.TouchPoint;
+import com.github.kklisura.cdt.protocol.types.input.*;
+
 import java.util.List;
 
 public interface Input {
@@ -125,17 +118,17 @@ public interface Input {
    * @param pointerType Pointer type (default: "mouse").
    */
   void dispatchMouseEvent(
-      @ParamName("type") DispatchMouseEventType type,
-      @ParamName("x") Double x,
-      @ParamName("y") Double y,
-      @Optional @ParamName("modifiers") Integer modifiers,
-      @Optional @ParamName("timestamp") Double timestamp,
-      @Optional @ParamName("button") DispatchMouseEventButton button,
-      @Optional @ParamName("buttons") Integer buttons,
-      @Optional @ParamName("clickCount") Integer clickCount,
-      @Optional @ParamName("deltaX") Double deltaX,
-      @Optional @ParamName("deltaY") Double deltaY,
-      @Optional @ParamName("pointerType") DispatchMouseEventPointerType pointerType);
+          @ParamName("type") DispatchMouseEventType type,
+          @ParamName("x") Double x,
+          @ParamName("y") Double y,
+          @Optional @ParamName("modifiers") Integer modifiers,
+          @Optional @ParamName("timestamp") Double timestamp,
+          @Optional @ParamName("button") MouseButton button,
+          @Optional @ParamName("buttons") Integer buttons,
+          @Optional @ParamName("clickCount") Integer clickCount,
+          @Optional @ParamName("deltaX") Double deltaX,
+          @Optional @ParamName("deltaY") Double deltaY,
+          @Optional @ParamName("pointerType") DispatchMouseEventPointerType pointerType);
 
   /**
    * Dispatches a touch event to the page.
@@ -168,46 +161,46 @@ public interface Input {
       @Optional @ParamName("modifiers") Integer modifiers,
       @Optional @ParamName("timestamp") Double timestamp);
 
-  /**
-   * Emulates touch event from the mouse event parameters.
-   *
-   * @param type Type of the mouse event.
-   * @param x X coordinate of the mouse pointer in DIP.
-   * @param y Y coordinate of the mouse pointer in DIP.
-   * @param button Mouse button.
-   */
-  @Experimental
-  void emulateTouchFromMouseEvent(
-      @ParamName("type") EmulateTouchFromMouseEventType type,
-      @ParamName("x") Integer x,
-      @ParamName("y") Integer y,
-      @ParamName("button") EmulateTouchFromMouseEventButton button);
+    /**
+     * Emulates touch event from the mouse event parameters.
+     *
+     * @param type   Type of the mouse event.
+     * @param x      X coordinate of the mouse pointer in DIP.
+     * @param y      Y coordinate of the mouse pointer in DIP.
+     * @param button Mouse button. Only "none", "left", "right" are supported.
+     */
+    @Experimental
+    void emulateTouchFromMouseEvent(
+            @ParamName("type") EmulateTouchFromMouseEventType type,
+            @ParamName("x") Integer x,
+            @ParamName("y") Integer y,
+            @ParamName("button") MouseButton button);
 
-  /**
-   * Emulates touch event from the mouse event parameters.
-   *
-   * @param type Type of the mouse event.
-   * @param x X coordinate of the mouse pointer in DIP.
-   * @param y Y coordinate of the mouse pointer in DIP.
-   * @param button Mouse button.
-   * @param timestamp Time at which the event occurred (default: current time).
-   * @param deltaX X delta in DIP for mouse wheel event (default: 0).
-   * @param deltaY Y delta in DIP for mouse wheel event (default: 0).
-   * @param modifiers Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4,
-   *     Shift=8 (default: 0).
-   * @param clickCount Number of times the mouse button was clicked (default: 0).
+    /**
+     * Emulates touch event from the mouse event parameters.
+     *
+     * @param type Type of the mouse event.
+     * @param x X coordinate of the mouse pointer in DIP.
+     * @param y Y coordinate of the mouse pointer in DIP.
+     * @param button Mouse button. Only "none", "left", "right" are supported.
+     * @param timestamp Time at which the event occurred (default: current time).
+     * @param deltaX X delta in DIP for mouse wheel event (default: 0).
+     * @param deltaY Y delta in DIP for mouse wheel event (default: 0).
+     * @param modifiers Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4,
+     *     Shift=8 (default: 0).
+     * @param clickCount Number of times the mouse button was clicked (default: 0).
    */
   @Experimental
   void emulateTouchFromMouseEvent(
-      @ParamName("type") EmulateTouchFromMouseEventType type,
-      @ParamName("x") Integer x,
-      @ParamName("y") Integer y,
-      @ParamName("button") EmulateTouchFromMouseEventButton button,
-      @Optional @ParamName("timestamp") Double timestamp,
-      @Optional @ParamName("deltaX") Double deltaX,
-      @Optional @ParamName("deltaY") Double deltaY,
-      @Optional @ParamName("modifiers") Integer modifiers,
-      @Optional @ParamName("clickCount") Integer clickCount);
+          @ParamName("type") EmulateTouchFromMouseEventType type,
+          @ParamName("x") Integer x,
+          @ParamName("y") Integer y,
+          @ParamName("button") MouseButton button,
+          @Optional @ParamName("timestamp") Double timestamp,
+          @Optional @ParamName("deltaX") Double deltaX,
+          @Optional @ParamName("deltaY") Double deltaY,
+          @Optional @ParamName("modifiers") Integer modifiers,
+          @Optional @ParamName("clickCount") Integer clickCount);
 
   /**
    * Ignores input events (useful while auditing page).

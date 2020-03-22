@@ -4,7 +4,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #%L
  * cdt-java-client
  * %%
- * Copyright (C) 2018 - 2019 Kenan Klisura
+ * Copyright (C) 2018 - 2020 Kenan Klisura
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,7 @@ package com.github.kklisura.cdt.protocol.commands;
  * #L%
  */
 
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioListenerCreated;
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioListenerWillBeDestroyed;
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioNodeCreated;
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioNodeWillBeDestroyed;
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioParamCreated;
-import com.github.kklisura.cdt.protocol.events.webaudio.AudioParamWillBeDestroyed;
-import com.github.kklisura.cdt.protocol.events.webaudio.ContextChanged;
-import com.github.kklisura.cdt.protocol.events.webaudio.ContextCreated;
-import com.github.kklisura.cdt.protocol.events.webaudio.ContextWillBeDestroyed;
-import com.github.kklisura.cdt.protocol.events.webaudio.NodeParamConnected;
-import com.github.kklisura.cdt.protocol.events.webaudio.NodeParamDisconnected;
-import com.github.kklisura.cdt.protocol.events.webaudio.NodesConnected;
-import com.github.kklisura.cdt.protocol.events.webaudio.NodesDisconnected;
+import com.github.kklisura.cdt.protocol.events.webaudio.*;
 import com.github.kklisura.cdt.protocol.support.annotations.EventName;
 import com.github.kklisura.cdt.protocol.support.annotations.Experimental;
 import com.github.kklisura.cdt.protocol.support.annotations.ParamName;
